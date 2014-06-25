@@ -811,7 +811,7 @@ extern "C" {
 /* Reuse tokens from ARB_draw_elements_base_vertex (none) */
 /* Reuse tokens from ARB_fragment_coord_conventions (none) */
 /* Reuse tokens from ARB_provoking_vertex */
-/* reuse GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION */
+/* reuse GL_quadPlanS_FOLLOW_PROVOKING_VERTEX_CONVENTION */
 /* reuse GL_FIRST_VERTEX_CONVENTION */
 /* reuse GL_LAST_VERTEX_CONVENTION */
 /* reuse GL_PROVOKING_VERTEX */
@@ -2160,7 +2160,7 @@ extern "C" {
 #endif
 
 #ifndef GL_ARB_provoking_vertex
-#define GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION 0x8E4C
+#define GL_quadPlanS_FOLLOW_PROVOKING_VERTEX_CONVENTION 0x8E4C
 #define GL_FIRST_VERTEX_CONVENTION        0x8E4D
 #define GL_LAST_VERTEX_CONVENTION         0x8E4E
 #define GL_PROVOKING_VERTEX               0x8E4F
@@ -2355,7 +2355,7 @@ extern "C" {
 #define GL_TESS_GEN_VERTEX_ORDER          0x8E78
 #define GL_TESS_GEN_POINT_MODE            0x8E79
 /* reuse GL_TRIANGLES */
-/* reuse GL_QUADS */
+/* reuse GL_quadPlanS */
 #define GL_ISOLINES                       0x8E7A
 /* reuse GL_EQUAL */
 #define GL_FRACTIONAL_ODD                 0x8E7B
@@ -3417,14 +3417,14 @@ extern "C" {
 #define GL_DUAL_INTENSITY16_SGIS          0x811B
 #define GL_DUAL_LUMINANCE_ALPHA4_SGIS     0x811C
 #define GL_DUAL_LUMINANCE_ALPHA8_SGIS     0x811D
-#define GL_QUAD_ALPHA4_SGIS               0x811E
-#define GL_QUAD_ALPHA8_SGIS               0x811F
-#define GL_QUAD_LUMINANCE4_SGIS           0x8120
-#define GL_QUAD_LUMINANCE8_SGIS           0x8121
-#define GL_QUAD_INTENSITY4_SGIS           0x8122
-#define GL_QUAD_INTENSITY8_SGIS           0x8123
+#define GL_quadPlan_ALPHA4_SGIS               0x811E
+#define GL_quadPlan_ALPHA8_SGIS               0x811F
+#define GL_quadPlan_LUMINANCE4_SGIS           0x8120
+#define GL_quadPlan_LUMINANCE8_SGIS           0x8121
+#define GL_quadPlan_INTENSITY4_SGIS           0x8122
+#define GL_quadPlan_INTENSITY8_SGIS           0x8123
 #define GL_DUAL_TEXTURE_SELECT_SGIS       0x8124
-#define GL_QUAD_TEXTURE_SELECT_SGIS       0x8125
+#define GL_quadPlan_TEXTURE_SELECT_SGIS       0x8125
 #endif
 
 #ifndef GL_SGIX_sprite
@@ -4643,7 +4643,7 @@ extern "C" {
 #define GL_PN_TRIANGLES_POINT_MODE_LINEAR_ATI 0x87F5
 #define GL_PN_TRIANGLES_POINT_MODE_CUBIC_ATI 0x87F6
 #define GL_PN_TRIANGLES_NORMAL_MODE_LINEAR_ATI 0x87F7
-#define GL_PN_TRIANGLES_NORMAL_MODE_QUADRATIC_ATI 0x87F8
+#define GL_PN_TRIANGLES_NORMAL_MODE_quadPlanRATIC_ATI 0x87F8
 #endif
 
 #ifndef GL_ATI_vertex_array_object
@@ -4790,7 +4790,7 @@ extern "C" {
 #endif
 
 #ifndef GL_SUN_mesh_array
-#define GL_QUAD_MESH_SUN                  0x8614
+#define GL_quadPlan_MESH_SUN                  0x8614
 #define GL_TRIANGLE_MESH_SUN              0x8615
 #endif
 
@@ -5557,7 +5557,7 @@ extern "C" {
 #endif
 
 #ifndef GL_EXT_provoking_vertex
-#define GL_QUADS_FOLLOW_PROVOKING_VERTEX_CONVENTION_EXT 0x8E4C
+#define GL_quadPlanS_FOLLOW_PROVOKING_VERTEX_CONVENTION_EXT 0x8E4C
 #define GL_FIRST_VERTEX_CONVENTION_EXT    0x8E4D
 #define GL_LAST_VERTEX_CONVENTION_EXT     0x8E4E
 #define GL_PROVOKING_VERTEX_EXT           0x8E4F
@@ -6046,12 +6046,12 @@ extern "C" {
 #define GL_RELATIVE_HORIZONTAL_LINE_TO_NV 0x07
 #define GL_VERTICAL_LINE_TO_NV            0x08
 #define GL_RELATIVE_VERTICAL_LINE_TO_NV   0x09
-#define GL_QUADRATIC_CURVE_TO_NV          0x0A
-#define GL_RELATIVE_QUADRATIC_CURVE_TO_NV 0x0B
+#define GL_quadPlanRATIC_CURVE_TO_NV          0x0A
+#define GL_RELATIVE_quadPlanRATIC_CURVE_TO_NV 0x0B
 #define GL_CUBIC_CURVE_TO_NV              0x0C
 #define GL_RELATIVE_CUBIC_CURVE_TO_NV     0x0D
-#define GL_SMOOTH_QUADRATIC_CURVE_TO_NV   0x0E
-#define GL_RELATIVE_SMOOTH_QUADRATIC_CURVE_TO_NV 0x0F
+#define GL_SMOOTH_quadPlanRATIC_CURVE_TO_NV   0x0E
+#define GL_RELATIVE_SMOOTH_quadPlanRATIC_CURVE_TO_NV 0x0F
 #define GL_SMOOTH_CUBIC_CURVE_TO_NV       0x10
 #define GL_RELATIVE_SMOOTH_CUBIC_CURVE_TO_NV 0x11
 #define GL_SMALL_CCW_ARC_TO_NV            0x12
