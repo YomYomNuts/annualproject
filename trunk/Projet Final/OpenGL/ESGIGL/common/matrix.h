@@ -137,6 +137,14 @@ struct Matrix4
         T.x = 0; T.y = 0; T.z = 0; T.w = 1;
     }
 
+	void IdentityScale(const Type& scale)
+    {
+        I.x = scale; I.y = 0; I.z = 0; I.w = 0;
+        J.x = 0; J.y = scale; J.z = 0; J.w = 0;
+        K.x = 0; K.y = 0; K.z = scale; K.w = 0;
+        T.x = 0; T.y = 0; T.z = 0; T.w = scale;
+    }
+
 	void Transpose()
 	{
 		Type temp0 = I.y; I.y = J.x; J.x = temp0;

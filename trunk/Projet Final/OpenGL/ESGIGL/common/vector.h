@@ -160,6 +160,16 @@ struct Vector3
         return x * v.x + y * v.y + z * v.z;
     }
 
+	T Convex(Vector3 * v1, Vector3 * v2)
+	{
+		return (x - v1->x) * (v2->y - v1->y) - (v2->x - v1->x) * (y - v1->y);
+	}
+
+	T Convex(Vector3 v1, Vector3 v2)
+	{
+		return (x - v1.x) * (v2.y - v1.y) - (v2.x - v1.x) * (y - v1.y);
+	}
+
     Vector3 operator+(const Vector3& v) const
     {
         return Vector3(x + v.x, y + v.y,  z + v.z);
@@ -177,6 +187,13 @@ struct Vector3
         x -= v.x;
         y -= v.y;
         z -= v.z;
+    }
+
+    void operator*=(const T& s)
+    {
+        x *= s;
+        y *= s;
+        z *= s;
     }
 
     void operator/=(T s)
@@ -231,6 +248,14 @@ struct Vector4
     Vector4 operator+(const Vector4& v) const
     {
 		return Vector4(x + v.x, y + v.y,  z + v.z, w + v.w);
+    }
+
+    void operator*=(const T& s)
+    {
+        x *= s;
+        y *= s;
+        z *= s;
+        w *= s;
     }
 
     T Dot(const Vector4& v) const

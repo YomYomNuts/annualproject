@@ -15,4 +15,3 @@ void main()
 	gl_PointSize = 4.0;
 	gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_WorldMatrix * a_Position;
 }
-

@@ -2,10 +2,58 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AnnualProject.cpp" />
+    <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="Face.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="DestructorManager.cpp" />
+    <ClCompile Include="ConvexHull.cpp" />
+    <ClCompile Include="ParaboloidSurfaceProjection.cpp" />
+    <ClCompile Include="c_loops.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="cell.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="container.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="container_prd.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="pre_container.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="unitcell.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="v_base.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="v_base_wl.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="v_compute.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="voro++.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>voro++</Filter>
+    </ClCompile>
+    <ClCompile Include="VoronoiGenerator.cpp" />
+    <ClCompile Include="DelaunayGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="shaders">
       <UniqueIdentifier>{1062de24-7d46-4f30-b805-bb018127add9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="voro++">
+      <UniqueIdentifier>{35183391-2597-473f-b0df-9f02f0ac1f7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -15,5 +63,58 @@
     <None Include="basic.vert">
       <Filter>shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="Face.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="DestructorManager.h" />
+    <ClInclude Include="ConvexHull.h" />
+    <ClInclude Include="ParaboloidSurfaceProjection.h" />
+    <ClInclude Include="c_loops.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="cell.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="container.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="container_prd.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="pre_container.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="rad_option.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="unitcell.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="v_base.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="v_compute.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="voro++.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="worklist.h">
+      <Filter>voro++</Filter>
+    </ClInclude>
+    <ClInclude Include="VoronoiGenerator.h" />
+    <ClInclude Include="DelaunayGenerator.h" />
   </ItemGroup>
 </Project>
