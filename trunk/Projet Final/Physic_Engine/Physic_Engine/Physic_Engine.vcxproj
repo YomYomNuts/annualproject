@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}</ProjectGuid>
+    <RootNamespace>Test_Rotation</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>
+    </LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\EsgiGL;..\EsgiGL\Libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>esgiGL2debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../EsgiGL/Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\EsgiGL\Libs;..\EsgiGL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>esgiGL2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../EsgiGL/Libs</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cell.cpp" />
+    <ClCompile Include="common.cpp" />
+    <ClCompile Include="Components.cpp" />
+    <ClCompile Include="container.cpp" />
+    <ClCompile Include="container_prd.cpp" />
+    <ClCompile Include="ConvexHull.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="c_loops.cpp" />
+    <ClCompile Include="DelaunayGenerator.cpp" />
+    <ClCompile Include="DestructorManager.cpp" />
+    <ClCompile Include="Edge.cpp" />
+    <ClCompile Include="Face.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Generic_Object.cpp" />
+    <ClCompile Include="Gravity.cpp" />
+    <ClCompile Include="MathFunctions.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="ParaboloidSurfaceProjection.cpp" />
+    <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="pre_container.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="RigidBody_Cube.cpp" />
+    <ClCompile Include="RigidBody_Generic_Object.cpp" />
+    <ClCompile Include="RigidBody_Plane.cpp" />
+    <ClCompile Include="RigidBody_Sphere.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="unitcell.cpp" />
+    <ClCompile Include="voro++.cpp" />
+    <ClCompile Include="VoronoiGenerator.cpp" />
+    <ClCompile Include="v_base.cpp" />
+    <ClCompile Include="v_base_wl.cpp" />
+    <ClCompile Include="v_compute.cpp" />
+    <ClCompile Include="wall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="basic.frag" />
+    <None Include="basic3d.vert" />
+    <None Include="basic_texture.frag" />
+    <None Include="quad3d.vert" />
+    <None Include="quad3d_texture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cell.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="container.h" />
+    <ClInclude Include="container_prd.h" />
+    <ClInclude Include="ConvexHull.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="c_loops.h" />
+    <ClInclude Include="DelaunayGenerator.h" />
+    <ClInclude Include="DestructorManager.h" />
+    <ClInclude Include="Edge.h" />
+    <ClInclude Include="Face.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Generic_Object.h" />
+    <ClInclude Include="Gravity.h" />
+    <ClInclude Include="MathFunctions.h" />
+    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="ParaboloidSurfaceProjection.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="pre_container.h" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="rad_option.h" />
+    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="RigidBody_Cube.h" />
+    <ClInclude Include="RigidBody_Generic_Object.h" />
+    <ClInclude Include="RigidBody_Plane.h" />
+    <ClInclude Include="RigidBody_Sphere.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="sse_mathfun.h" />
+    <ClInclude Include="unitcell.h" />
+    <ClInclude Include="voro++.h" />
+    <ClInclude Include="VoronoiGenerator.h" />
+    <ClInclude Include="v_base.h" />
+    <ClInclude Include="v_compute.h" />
+    <ClInclude Include="wall.h" />
+    <ClInclude Include="worklist.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Components.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Face.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Generic_Object.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Gravity.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunctions.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody_Cube.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody_Generic_Object.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody_Plane.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody_Sphere.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Fichiers de ressources\Physic_Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="wall.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="VoronoiGenerator.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="voro++.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="v_compute.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="v_base_wl.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="v_base.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="pre_container.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="ParaboloidSurfaceProjection.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="DestructorManager.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="DelaunayGenerator.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvexHull.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="container_prd.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="container.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="cell.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="c_loops.cpp">
+      <Filter>Fichiers de ressources\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="unitcell.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sse_mathfun.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Face.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_Object.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Gravity.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunctions.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody_Cube.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody_Generic_Object.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody_Plane.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody_Sphere.h">
+      <Filter>Fichiers d%27en-tête\Physic_Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="c_loops.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="cell.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="container.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="container_prd.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvexHull.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="DelaunayGenerator.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="DestructorManager.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="ParaboloidSurfaceProjection.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="pre_container.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="rad_option.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="unitcell.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="v_base.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="v_compute.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="voro++.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="VoronoiGenerator.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="wall.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+    <ClInclude Include="worklist.h">
+      <Filter>Fichiers d%27en-tête\Explosion</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="quad3d.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="basic.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="basic3d.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="basic_texture.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="quad3d_texture.vert">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{f704fd5c-3da0-4a59-8310-28582aa942a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{b6ab2fc2-e580-47d0-91bc-8def01263a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{5aefabd4-743e-425f-a16d-007da0dbb2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{ce802f96-d794-4153-b1a9-5e65ee8ab917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Physic_Engine">
+      <UniqueIdentifier>{4b7e669e-3c81-4cb4-a170-bbf1d2764c20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Explosion">
+      <UniqueIdentifier>{470d8592-24fd-4c07-9d57-c0d53e91525c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources\Physic_Engine">
+      <UniqueIdentifier>{300016e6-0726-4e4a-870f-31819f3769b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources\Explosion">
+      <UniqueIdentifier>{5b911401-3848-4ae7-bc1f-d1849b3814b2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,103 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Physic_Engine", "Physic_Engine\Physic_Engine.vcxproj", "{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}"
+	ProjectSection(ProjectDependencies) = postProject
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8} = {29E9C2FB-5ED1-4065-B017-F64D3F8111A8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EsgiGL", "ESGIGL\EsgiGL.vcxproj", "{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BC37C71-BC2B-4AE1-BCB7-5C8D03A1D714}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+		Performance2.psess = Performance2.psess
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug EGL|Any CPU = Debug EGL|Any CPU
+		Debug EGL|Mixed Platforms = Debug EGL|Mixed Platforms
+		Debug EGL|Win32 = Debug EGL|Win32
+		Debug GL2|Any CPU = Debug GL2|Any CPU
+		Debug GL2|Mixed Platforms = Debug GL2|Mixed Platforms
+		Debug GL2|Win32 = Debug GL2|Win32
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release EGL|Any CPU = Release EGL|Any CPU
+		Release EGL|Mixed Platforms = Release EGL|Mixed Platforms
+		Release EGL|Win32 = Release EGL|Win32
+		Release GL2|Any CPU = Release GL2|Any CPU
+		Release GL2|Mixed Platforms = Release GL2|Mixed Platforms
+		Release GL2|Win32 = Release GL2|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug EGL|Any CPU.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug EGL|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug EGL|Mixed Platforms.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug EGL|Win32.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug EGL|Win32.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug GL2|Any CPU.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug GL2|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug GL2|Mixed Platforms.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug GL2|Win32.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug GL2|Win32.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Debug|Win32.Build.0 = Debug|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release EGL|Any CPU.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release EGL|Mixed Platforms.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release EGL|Mixed Platforms.Build.0 = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release EGL|Win32.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release EGL|Win32.Build.0 = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release GL2|Any CPU.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release GL2|Mixed Platforms.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release GL2|Mixed Platforms.Build.0 = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release GL2|Win32.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release GL2|Win32.Build.0 = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release|Any CPU.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release|Win32.ActiveCfg = Release|Win32
+		{1CF52AF7-359C-409F-9AD4-E83FCBFBA429}.Release|Win32.Build.0 = Release|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Any CPU.ActiveCfg = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Mixed Platforms.ActiveCfg = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Mixed Platforms.Build.0 = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Win32.ActiveCfg = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug EGL|Win32.Build.0 = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Any CPU.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Mixed Platforms.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Mixed Platforms.Build.0 = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Win32.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug GL2|Win32.Build.0 = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Any CPU.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Mixed Platforms.ActiveCfg = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Mixed Platforms.Build.0 = Debug GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Win32.ActiveCfg = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Debug|Win32.Build.0 = Debug EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Any CPU.ActiveCfg = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Mixed Platforms.ActiveCfg = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Mixed Platforms.Build.0 = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Win32.ActiveCfg = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release EGL|Win32.Build.0 = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Any CPU.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Mixed Platforms.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Mixed Platforms.Build.0 = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Win32.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release GL2|Win32.Build.0 = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Any CPU.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Mixed Platforms.ActiveCfg = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Mixed Platforms.Build.0 = Release GL2|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Win32.ActiveCfg = Release EGL|Win32
+		{29E9C2FB-5ED1-4065-B017-F64D3F8111A8}.Release|Win32.Build.0 = Release EGL|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
