@@ -41,6 +41,7 @@ public:
 	void changeVerticesList(vector<vec3> verticesList);
 	void changeIndexesList(vector<GLushort> indexesList);
 	void resetWireframeModeindexes(vector<GLushort> indexesList);
+	void calculateCenterOfObject();
 	~RigidBody_Generic_Object(void);
 
 private:

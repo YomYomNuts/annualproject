@@ -144,6 +144,8 @@ void Cube::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP,this->indexes.size(),GL_UNSIGNED_SHORT,&this->indexes.at(0));
 	}

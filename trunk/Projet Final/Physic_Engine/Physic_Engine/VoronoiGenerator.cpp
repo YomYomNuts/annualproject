@@ -154,6 +154,16 @@ void VoronoiGenerator::GenerateVoronoi(ObjectManager & gom, const Generic_Object
 				}
 				cell->TranslateAndLookAtAndScale(positionCenterRotation, positionLookAt, positionTranlate, 1.0f);
 				cell->CalculateIndexes();
+				cell->calculateCenterOfObject();
+				cell->setAlternateFacesAndNormals(false);
+				cell->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *cell->verticesList, *cell->indexesList, vec3(0.0f, 0.0f, 0.0f),false);
+				cell->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->calculateCenterOfObject();
+				cell->getComponents()->getRigidBody()->setDisplayRigidBody(true);
+				cell->setWireframeMode(false);
+				cell->getComponents()->getRigidBody()->activateRigidBody(true);
+				cell->getComponents()->getGravity()->setUseGravity(true);
+				//cell->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*cell->listIndexesWireframe);
+				cell->getComponents()->getGravity()->addForce(vec3(0.0f, -30.0f, 0.0f), cell->getVelocity(), 1.0);
 			}
 		} while(vl.inc());
 	}

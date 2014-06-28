@@ -419,6 +419,42 @@ void RigidBody_Generic_Object::resetWireframeModeindexes(vector<GLushort> indexe
 	this->listIndexesWireframe = indexesList;
 }
 
+void RigidBody_Generic_Object::calculateCenterOfObject()
+{
+	vec3 highestPoint = this->verticesList.at(0);
+	vec3 lowestPoint = this->verticesList.at(0);
+	vec3 leftPoint = this->verticesList.at(0);
+	vec3 rightPoint = this->verticesList.at(0);
+	vec3 frontPoint = this->verticesList.at(0);
+	vec3 backPoint = this->verticesList.at(0);
+
+	for(int i = 1; i < this->verticesList.size(); ++i)
+	{
+		if(this->verticesList.at(i).y > highestPoint.y)
+			highestPoint = this->verticesList.at(i);
+
+		if(this->verticesList.at(i).y < lowestPoint.y)
+			lowestPoint = this->verticesList.at(i);
+
+		if(this->verticesList.at(i).x > rightPoint.x)
+			rightPoint = this->verticesList.at(i);
+
+		if(this->verticesList.at(i).x < leftPoint.x)
+			leftPoint = this->verticesList.at(i);
+
+		if(this->verticesList.at(i).z > frontPoint.z)
+			frontPoint = this->verticesList.at(i);
+
+		if(this->verticesList.at(i).z < backPoint.z)
+			backPoint = this->verticesList.at(i);
+	}
+
+	this->centerOfObject = vec3((rightPoint.x + leftPoint.x)/2.0f, (highestPoint.y + lowestPoint.y)/2.0f, (frontPoint.z + backPoint.z)/2.0f);
+	
+	this->size = MF.distanceBetween2points(highestPoint, centerOfObject);
+
+}
+
 RigidBody_Generic_Object::~RigidBody_Generic_Object(void)
 {
 }

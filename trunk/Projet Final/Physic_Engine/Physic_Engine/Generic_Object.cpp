@@ -85,7 +85,6 @@ void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
 	{
 		glVertexAttribPointer(*positionAttrib, 3, GL_FLOAT, false, 0, &verticesList->at(0).x);
 		glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
-		
 		glDrawElements(GL_TRIANGLE_STRIP,this->indexesList->size(),GL_UNSIGNED_SHORT,&this->indexesList->at(0));
 
 		if(this->wireframeMode)
@@ -100,8 +99,16 @@ void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
 		glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
 		glDrawElements(GL_TRIANGLES, this->indexesList->size(), GL_UNSIGNED_SHORT, &this->indexesList->at(0));
 		glUniform4f(*colorUniform,  1.f, 0.f, 0.f, 1.f);
-		glDrawElements(GL_LINES, this->listIndexesWireframe->size(), GL_UNSIGNED_SHORT, &this->listIndexesWireframe->at(0));
-		/*glUniform4f(*colorUniform,  0.f, 0.f, 1.f, 1.f);*/
+
+		if(this->wireframeMode)
+		{
+			glEnable( GL_POLYGON_OFFSET_FILL );
+			glPolygonOffset( 1.0, 1.0 );
+			glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
+			glDrawElements(GL_LINES,this->listIndexesWireframe->size(),GL_UNSIGNED_SHORT,&this->listIndexesWireframe->at(0));
+		}
+		/*glDrawElements(GL_LINES, this->listIndexesWireframe->size(), GL_UNSIGNED_SHORT, &this->listIndexesWireframe->at(0));
+		glUniform4f(*colorUniform,  0.f, 0.f, 1.f, 1.f);*/
 		//glDrawElements(GL_POINTS, this->listIndexesPoint->size(), GL_UNSIGNED_SHORT, &this->listIndexesPoint->at(0));
 	}
 
@@ -876,6 +883,43 @@ void Generic_Object::TranslateAndLookAtAndScale(const vec3 & positionCenterRotat
 		this->verticesList->at(i).y = newVertex.y + positionTranlate.y;
 		this->verticesList->at(i).z = newVertex.z + positionTranlate.z;
 	}
+}
+
+void Generic_Object::calculateCenterOfObject()
+{
+	vec3 highestPoint = this->verticesList->at(0);
+	vec3 lowestPoint = this->verticesList->at(0);
+	vec3 leftPoint = this->verticesList->at(0);
+	vec3 rightPoint = this->verticesList->at(0);
+	vec3 frontPoint = this->verticesList->at(0);
+	vec3 backPoint = this->verticesList->at(0);
+
+	for(int i = 1; i < this->verticesList->size(); ++i)
+	{
+		if(this->verticesList->at(i).y > highestPoint.y)
+			highestPoint = this->verticesList->at(i);
+
+		if(this->verticesList->at(i).y < lowestPoint.y)
+			lowestPoint = this->verticesList->at(i);
+
+		if(this->verticesList->at(i).x > rightPoint.x)
+			rightPoint = this->verticesList->at(i);
+
+		if(this->verticesList->at(i).x < leftPoint.x)
+			leftPoint = this->verticesList->at(i);
+
+		if(this->verticesList->at(i).z > frontPoint.z)
+			frontPoint = this->verticesList->at(i);
+
+		if(this->verticesList->at(i).z < backPoint.z)
+			backPoint = this->verticesList->at(i);
+	}
+
+	this->centerOfObject = vec3((rightPoint.x + leftPoint.x)/2.0f, (highestPoint.y + lowestPoint.y)/2.0f, (frontPoint.z + backPoint.z)/2.0f);
+	
+	this->size = MF.distanceBetween2points(highestPoint, centerOfObject);
+
+	this->mass = MF.getVolumeOfACube(size);
 }
 
 Generic_Object::~Generic_Object(void)

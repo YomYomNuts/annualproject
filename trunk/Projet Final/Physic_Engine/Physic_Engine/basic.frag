@@ -17,6 +17,8 @@ varying lowp vec4 v_VertexColor;
 #else
 varying vec4 v_VertexColor;
 #endif*/
+
+
 varying vec4 v_VertexColor;
 //uniform sampler2D u_Texture;
 
