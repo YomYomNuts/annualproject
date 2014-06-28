@@ -667,7 +667,6 @@ void Sphere::changeLevelOfDetail(int levelOfDetail)
 
 void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 {
-
 	
 	//// FRONT (UP) \\\\\
 
@@ -678,6 +677,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -691,6 +692,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -704,6 +707,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -717,6 +722,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -730,6 +737,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -743,6 +752,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -756,6 +767,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
@@ -769,6 +782,8 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 	
 	if(this->wireframeMode)
 	{
+		glEnable( GL_POLYGON_OFFSET_FILL );
+		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}

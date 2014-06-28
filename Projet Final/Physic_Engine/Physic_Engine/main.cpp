@@ -112,13 +112,16 @@ int main(int argc, char *argv[])
 void Update(float elapsedTime)
 {
 
-	EsgiTimer benchmark;
-	benchmark.Begin();
+	//EsgiTimer benchmark;
+	//benchmark.Begin();
 
 	objectManager.update(elapsedTime);
 	
+	float y = ground->getComponents()->getRigidBody()->getPosLowestVertex().y;
 
-	benchmark.End();
+	y;
+
+	//benchmark.End();
 	printf("duree de l'update : %Lf millisecondes\n", 1/elapsedTime/*(benchmark.GetElapsedTime()*//**1000.0*/);
 	//camera.target = sphere.getCenterOfObject();
 
@@ -129,6 +132,7 @@ void Draw()
 	glClearColor(1.f, 1.f, 1.f, 1.f);
 	glClearDepth(1.f);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
@@ -148,6 +152,7 @@ void Draw()
 	GLuint programObject = shader.GetProgram();
 	glUseProgram(programObject);
 
+
 	GLint position_attrib = glGetAttribLocation(programObject,"a_Position");
 
 	GLint color_uniform = glGetUniformLocation(programObject, "u_Color");
@@ -161,12 +166,16 @@ void Draw()
 
 	GLint projectionUniform = glGetUniformLocation(programObject, "u_ProjectionMatrix");
 	glUniformMatrix4fv(projectionUniform, 1, 0, &projectionMatrix.I.x);
-	
 
 	worldMatrix.Identity();
 	worldMatrix.T.set(0.f, 0.f, 0.f, 1.f); // Translate sur l'axe z
 	GLint worldUnifrom = glGetUniformLocation(programObject, "u_WorldMatrix");
 	glUniformMatrix4fv(worldUnifrom, 1, 0, &worldMatrix.I.x);
+
+
+
+	
+
 	glEnableVertexAttribArray(position_attrib);
 	objectManager.render(&position_attrib, &color_uniform);
 
@@ -253,13 +262,13 @@ bool Setup()
 
 
 
-	int numberSudivisionX = 30;
-	int numberSudivisionZ = 30;
+	int numberSudivisionX = 2;
+	int numberSudivisionZ = 2;
 
 	
-	float tralala = 100;
-	vec3 minimalSize(-tralala, 0.f, -tralala);
-	vec3 maximalSize(tralala, 0.f, tralala);
+
+	vec3 minimalSize(-scale, 0.f, -scale);
+	vec3 maximalSize(scale, 0.f, scale);
 
 	float sizeElementX = (maximalSize.x - minimalSize.x) / numberSudivisionX;
 	float sizeElementZ = (maximalSize.z - minimalSize.z) / numberSudivisionZ;
@@ -309,23 +318,26 @@ bool Setup()
 
 	ground->setWireframeMode(true);
 
-	camera.position = vec3(0.f, 30.f, 1.f);
-	camera.orientation = vec3(0.f, 0.f, 0.f);
-	camera.target = vec3(0.f, 0.f, 0.f);
+	//camera.position = vec3(0.f, 30.f, 1.f);
+	//camera.orientation = vec3(0.f, 0.f, 0.f);
+	//camera.target = vec3(0.f, 0.f, 0.f);
 
 	//DestructorManager::LaunchDestruction(objectManager, ground, vec3(0.0f, 0.0f, 0.0f), -camera.position);
 	
 
-	camera.position = vec3(0.f, 10.f, 20.f);
-	camera.orientation = vec3(0.f, 0.f, 0.f);
-	camera.target = vec3(0.f, 0.f, 0.f);
+	//camera.position = vec3(0.f, 10.f, 20.f);
+	//camera.orientation = vec3(0.f, 0.f, 0.f);
+	//camera.target = vec3(0.f, 0.f, 0.f);
 
+
+	ground->setRenderObject(true);
 	ground->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *ground->verticesList, *ground->indexesList, vec3(0.0f, 0.0f, 0.0f),false);
 	ground->getComponents()->getRigidBody()->setIsStatic(true);
 	ground->getComponents()->getRigidBody()->setSize(2000.0f);
 	ground->getComponents()->getRigidBody()->setDisplayRigidBody(true);
 	ground->getComponents()->getRigidBody()->activateRigidBody(true);
 	ground->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*ground->listIndexesWireframe);
+	ground->setColor(0.84f, 0.79f, 0.69f,1.0f);
 	//ground->getComponents()->getGravity()->setUseGravity(true);
 	/*Cube* ground;
 
@@ -512,6 +524,233 @@ bool Setup()
 	return true;
 }
 
+Generic_Object* CreateFragments(vec3 position, float size)
+{
+	vector<vec3>* vertices = new vector<vec3>();
+	vector<GLushort>* indexes = new vector<GLushort>();
+
+	size /= 2;
+
+	float LO;
+	float HI;
+	float x; 
+	float z; 
+	float y;
+
+	LO = -3.0f;
+	HI = 3.0f;
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	vertices->push_back(vec3(-size + 0.0f + x, -size + 0.0f + y,  size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3( size + 0.0f + x, -size + 0.0f + y,  size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3( size + 0.0f + x,  size + 0.0f + y,  size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3(-size + 0.0f + x,  size + 0.0f + y,  size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3(-size + 0.0f + x, -size + 0.0f + y, -size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3( size + 0.0f + x, -size + 0.0f + y, -size + 0.0f + z));
+
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+    vertices->push_back(vec3( size + 0.0f + x,  size + 0.0f + y, -size + 0.0f + z));
+    
+	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+	vertices->push_back(vec3(-size + 0.0f + x,  size + 0.0f + y, -size + 0.0f + z));
+
+
+	indexes->push_back(3);
+    indexes->push_back(0);
+    indexes->push_back(1);
+    indexes->push_back(1);
+    indexes->push_back(3);
+    indexes->push_back(2);
+    indexes->push_back(2);
+    indexes->push_back(1);
+    indexes->push_back(5);
+    indexes->push_back(5);
+    indexes->push_back(2);
+    indexes->push_back(6);
+    indexes->push_back(6);
+    indexes->push_back(5);
+    indexes->push_back(4);
+    indexes->push_back(4);
+    indexes->push_back(6);
+    indexes->push_back(7);
+    indexes->push_back(7);
+    indexes->push_back(4);
+    indexes->push_back(0);
+    indexes->push_back(0);
+    indexes->push_back(7);
+    indexes->push_back(3);
+    indexes->push_back(3);
+    indexes->push_back(2);
+    indexes->push_back(6);
+    indexes->push_back(6);
+    indexes->push_back(3);
+    indexes->push_back(7);
+    indexes->push_back(7);
+    indexes->push_back(7);
+    indexes->push_back(4);
+    indexes->push_back(4);
+    indexes->push_back(0);
+    indexes->push_back(1);
+	indexes->push_back(1);
+	indexes->push_back(4);
+	indexes->push_back(5);
+
+	return new Generic_Object(*vertices, *indexes, position.x, position.y, position.z, true);
+}
+
+void makeExplosion()
+{
+	float LO;
+	float HI;
+	float x; 
+	float z; 
+	float y;
+	float r, g, b;
+	Generic_Object* frag;
+	vec3 oldPos;
+
+	float dirX;
+	float dirY;
+	float dirZ;
+
+
+	oldPos = camera.position;
+
+		camera.position = vec3(0.f, 30.f, 1.0f);
+		camera.orientation = vec3(0.f, 0.f, 0.f);
+		camera.target = vec3(0.f, 0.f, 0.f);
+
+		DestructorManager::LaunchDestruction(objectManager, ground, vec3(0.0f, 0.0f, 0.0f), -camera.position);
+		
+		ground->getComponents()->getRigidBody()->changeIndexesList(*ground->indexesList);
+		ground->getComponents()->getRigidBody()->changeVerticesList(*ground->verticesList);
+		ground->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*ground->listIndexesWireframe);
+		
+		
+		camera.position = oldPos;
+
+	
+
+
+	dirX = -2;
+		dirY = 4;
+		dirZ = -2;
+
+
+		for(int i = 0; i < 4; ++i)
+		{
+			for(int j= 0; j < 4; ++j)
+			{
+				for(int k =0; k < 5; ++k)
+				{
+					
+
+					//LO = 0.0f;
+					//HI = 1.0f;
+
+					//r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					//g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					//b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					//newObject = new Generic_Object(*cube.getListOfVertices(), *cube.getListOfIndexes(), (float)k * 10.0f-10.f, (float)i * 10.0f + 5.0f + 20.0f, (float)j * 10.0f-10.0f, true); // rouge
+					//objectManager.addObject(newObject);
+
+					frag = CreateFragments(vec3((float)k * 10.0f-10.f + i*0, (float)i * 10.0f + 0.0f + 20.0f, (float)j * 10.0f-10.0f), 6.0f);
+
+					//cout << ++countSphere << " - x: " << k* 5.0f << "   y: " << i* 5.0f + 5.0f<< "   z: " << j* 5.0f << endl;
+					//frag = CreateFragments(vec3(0.0f, 5.0f, 0.0f), 1.0f);
+		 
+					LO = 0.0f;
+					HI = 1.0f;
+
+					r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					frag->setWireframeMode(false);
+					frag->getComponents()->getGravity()->setUseGravity(true);
+					frag->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *frag->getListOfVertices(), *frag->getListOfIndexes(), frag->getCenterOfObject(), true);
+					frag->getComponents()->getRigidBody()->setDisplayRigidBody(true);
+					frag->getComponents()->getRigidBody()->activateRigidBody(true);
+					frag->getComponents()->getGravity()->setBounciness(frag->getMass(), frag->getMass()/5550);
+					frag->getComponents()->getGravity()->setResistance(frag->getMass(), frag->getMass() / 1.01f);
+					frag->setAlternateFacesAndNormals(true);
+					frag->getComponents()->getGravity()->setGravity(9.8f);
+
+					switch(j)
+					{
+					case 0:
+						frag->setColor(0.61f, 0.44f, 0.13f, 1.0f);
+						break;
+					case 1:
+						frag->setColor(0.77f, 0.56f, 0.16f, 1.0f);
+						break;
+					case 2:
+						frag->setColor(0.86f, 0.72f, 0.43f, 1.0f);
+						break;
+					case 3:
+						frag->setColor(0.91f, 0.79f, 0.58f, 1.0f);
+						break;
+					default:
+						frag->setColor(r, g, b, 1.0f);
+						break;
+					}
+					
+					//frag->getComponents()->getGravity()->addForce(vec3(0.0f, -10.0f, 0.0f), frag->getVelocity(), 1.0);
+
+
+					LO = 1.0f;
+					HI = 2.0f;
+
+					x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					frag->getComponents()->getGravity()->addForce(vec3(dirX * -x, dirY* - y, dirZ *-z), frag->getVelocity(), 1.0);
+
+					++dirX;
+					dirX =(dirX ==0?1:dirX);
+
+					objectManager.addObject(frag);
+				}
+
+				dirX = -2;
+			}
+
+			++dirY;
+					++dirZ;
+					dirZ =(dirZ ==0?1:dirZ);
+		}
+}
+
 void Keyboard(unsigned char key, int mx, int my)
 {
 	float step = 10.0f;
@@ -524,9 +763,139 @@ void Keyboard(unsigned char key, int mx, int my)
 	float r, g, b;
 	Sphere *tempSphere;
 	Generic_Object *newObject;
+	Generic_Object* frag;
+	vec3 oldPos;
+
+	float dirX;
+	float dirY;
+	float dirZ;
+
 
 	switch(key)
 	{
+	case 'u':
+		makeExplosion();
+		break;
+	case 'g':
+		frag = CreateFragments(vec3(0.0f, 5.0f, 0.0f), 1.0f);
+		 
+		LO = 0.0f;
+		HI = 1.0f;
+
+		r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+		g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+		b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+		frag->setWireframeMode(false);
+		frag->getComponents()->getGravity()->setUseGravity(true);
+		frag->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *frag->getListOfVertices(), *frag->getListOfIndexes(), frag->getCenterOfObject(), true);
+		frag->getComponents()->getRigidBody()->setDisplayRigidBody(true);
+		frag->getComponents()->getRigidBody()->activateRigidBody(true);
+		frag->getComponents()->getGravity()->setBounciness(frag->getMass(), frag->getMass()/3);
+		frag->getComponents()->getGravity()->setResistance(frag->getMass(), frag->getMass() / 1.01f);
+		frag->setAlternateFacesAndNormals(true);
+		frag->getComponents()->getGravity()->setGravity(9.8f);
+		frag->setColor(r, g, b, 1.0f);
+
+		objectManager.addObject(frag);
+
+		break;
+	case 'v':
+
+		dirX = -2;
+		dirY = 4;
+		dirZ = -2;
+
+
+		for(int i = 0; i < 4; ++i)
+		{
+			for(int j= 0; j < 4; ++j)
+			{
+				for(int k =0; k < 4; ++k)
+				{
+					
+
+					//LO = 0.0f;
+					//HI = 1.0f;
+
+					//r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					//g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					//b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					//newObject = new Generic_Object(*cube.getListOfVertices(), *cube.getListOfIndexes(), (float)k * 10.0f-10.f, (float)i * 10.0f + 5.0f + 20.0f, (float)j * 10.0f-10.0f, true); // rouge
+					//objectManager.addObject(newObject);
+
+					frag = CreateFragments(vec3((float)k * 10.0f-10.f + i*0, (float)i * 10.0f + 5.0f + 20.0f, (float)j * 10.0f-10.0f), 10.0f);
+
+					cout << ++countSphere << " - x: " << k* 5.0f << "   y: " << i* 5.0f + 5.0f<< "   z: " << j* 5.0f << endl;
+					//frag = CreateFragments(vec3(0.0f, 5.0f, 0.0f), 1.0f);
+		 
+					LO = 0.0f;
+					HI = 1.0f;
+
+					r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					frag->setWireframeMode(false);
+					frag->getComponents()->getGravity()->setUseGravity(true);
+					frag->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *frag->getListOfVertices(), *frag->getListOfIndexes(), frag->getCenterOfObject(), true);
+					frag->getComponents()->getRigidBody()->setDisplayRigidBody(true);
+					frag->getComponents()->getRigidBody()->activateRigidBody(true);
+					frag->getComponents()->getGravity()->setBounciness(frag->getMass(), frag->getMass()/5550);
+					frag->getComponents()->getGravity()->setResistance(frag->getMass(), frag->getMass() / 1.01f);
+					frag->setAlternateFacesAndNormals(true);
+					frag->getComponents()->getGravity()->setGravity(9.8f);
+					
+					switch(j)
+					{
+					case 0:
+						frag->setColor(0.61f, 0.44f, 0.13f, 1.0f);
+						break;
+					case 1:
+						frag->setColor(0.77f, 0.56f, 0.16f, 1.0f);
+						break;
+					case 2:
+						frag->setColor(0.86f, 0.72f, 0.43f, 1.0f);
+						break;
+					case 3:
+						frag->setColor(0.91f, 0.79f, 0.58f, 1.0f);
+						break;
+					default:
+						frag->setColor(r, g, b, 1.0f);
+						break;
+					}
+
+					//frag->getComponents()->getGravity()->addForce(vec3(0.0f, -10.0f, 0.0f), frag->getVelocity(), 1.0);
+
+
+					LO = 1.0f;
+					HI = 2.0f;
+
+					x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+					y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+
+					frag->getComponents()->getGravity()->addForce(vec3(dirX * -x, dirY* - y, dirZ *-z), frag->getVelocity(), 1.0);
+
+					++dirX;
+					dirX =(dirX ==0?1:dirX);
+
+					objectManager.addObject(frag);
+				}
+
+				dirX = -2;
+			}
+
+			++dirY;
+					++dirZ;
+					dirZ =(dirZ ==0?1:dirZ);
+		}
+		
+		break;
 	case 'a':
 		camera.position.y += step;
 		break;
@@ -573,7 +942,9 @@ void Keyboard(unsigned char key, int mx, int my)
 		break;
 	case 't':
 
-		camera.position = vec3(0.f, 30.f, 1.f);
+		oldPos = camera.position;
+
+		camera.position = vec3(0.f, 30.f, 1.0f);
 		camera.orientation = vec3(0.f, 0.f, 0.f);
 		camera.target = vec3(0.f, 0.f, 0.f);
 
@@ -582,9 +953,10 @@ void Keyboard(unsigned char key, int mx, int my)
 		ground->getComponents()->getRigidBody()->changeIndexesList(*ground->indexesList);
 		ground->getComponents()->getRigidBody()->changeVerticesList(*ground->verticesList);
 		ground->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*ground->listIndexesWireframe);
-		camera.position = vec3(0.f, 10.f, 20.f);
-		camera.orientation = vec3(0.f, 0.f, 0.f);
-		camera.target = vec3(0.f, 0.f, 0.f);
+		
+		
+		camera.position = oldPos;
+
 		break;
 
 	case 'h':

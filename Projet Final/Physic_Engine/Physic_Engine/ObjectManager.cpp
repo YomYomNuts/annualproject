@@ -183,6 +183,7 @@ vec4 ObjectManager::isSegmentInsideObject(RigidBody* otherObjectRigidBody, vec3 
 	vec3 direction;
 	float dotProduct;
 	float distance;
+	float size;
 
 	nbNormals = otherObjectRigidBody->getListOfNormals()->size();
 
@@ -190,45 +191,53 @@ vec4 ObjectManager::isSegmentInsideObject(RigidBody* otherObjectRigidBody, vec3 
 	direction = MF.getVector(pointA - (*velocityOfCurrentObject * elapsedTime), pointB - (*velocityOfCurrentObject * elapsedTime));
 	direction = MF.normalizeVector(direction);
 
+
+	size = MF.distanceBetween2points(pointA, pointB);
+
 	// Loop on all the faces
 	for(i = 0; i < nbNormals; i++)
 	{
 		distance = 0.0f;
 
-		// Check if the segment is parallel to the face
-		dotProduct = MF.dotProduct(direction, otherObjectRigidBody->getListOfNormals()->at(i));
+		distance = MF.distanceBetween2points(pointA, otherObjectRigidBody->getListOfNormals()->at(i));
 
-		if(dotProduct != 0.0f)
-		{
-			// Get the distance of the point of intersection between the pointA and the current face
-			distance = (MF.dotProduct(otherObjectRigidBody->getListOfNormals()->at(i), otherObjectRigidBody->getListOfCenterOfGravities()->at(i) - (pointA - (*velocityOfCurrentObject * elapsedTime))))/dotProduct;
-					
-			// Get the position of the point of intersection
-			vec3 posIntersection = direction * distance + pointA;
+		//if(distance < 2 * size)
+		//{
+			// Check if the segment is parallel to the face
+			dotProduct = MF.dotProduct(direction, otherObjectRigidBody->getListOfNormals()->at(i));
 
-			unsigned int indexVertexA;
-			unsigned int indexVertexB;
-			unsigned int indexVertexC;
-
-			vec3 vertexA;
-			vec3 vertexB;
-			vec3 vertexC;
-
-			indexVertexA = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).x);
-			indexVertexB = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).y);
-			indexVertexC = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).z);
-
-			// Get the 3 points of the triangle defining the face
-			vertexA = otherObjectRigidBody->getListOfVertices()->at(indexVertexA);
-			vertexB = otherObjectRigidBody->getListOfVertices()->at(indexVertexB);
-			vertexC = otherObjectRigidBody->getListOfVertices()->at(indexVertexC);
-
-			// Check that the intersection point is on the segment and in the triangle
-			if(MF.pointOnSegment(posIntersection, pointA, pointB) && MF.pointInTriangle(posIntersection, vertexA, vertexB, vertexC))
+			if(dotProduct != 0.0f)
 			{
-				return vec4(1.0f, posIntersection.x, posIntersection.y, posIntersection.z);
+				// Get the distance of the point of intersection between the pointA and the current face
+				distance = (MF.dotProduct(otherObjectRigidBody->getListOfNormals()->at(i), otherObjectRigidBody->getListOfCenterOfGravities()->at(i) - (pointA - (*velocityOfCurrentObject * elapsedTime))))/dotProduct;
+					
+				// Get the position of the point of intersection
+				vec3 posIntersection = direction * distance + pointA;
+
+				unsigned int indexVertexA;
+				unsigned int indexVertexB;
+				unsigned int indexVertexC;
+
+				vec3 vertexA;
+				vec3 vertexB;
+				vec3 vertexC;
+
+				indexVertexA = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).x);
+				indexVertexB = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).y);
+				indexVertexC = otherObjectRigidBody->getListOfIndexes()->at(otherObjectRigidBody->getListIndexesFaces()->at(i).z);
+
+				// Get the 3 points of the triangle defining the face
+				vertexA = otherObjectRigidBody->getListOfVertices()->at(indexVertexA);
+				vertexB = otherObjectRigidBody->getListOfVertices()->at(indexVertexB);
+				vertexC = otherObjectRigidBody->getListOfVertices()->at(indexVertexC);
+
+				// Check that the intersection point is on the segment and in the triangle
+				if(MF.pointOnSegment(posIntersection, pointA, pointB) && MF.pointInTriangle(posIntersection, vertexA, vertexB, vertexC))
+				{
+					return vec4(1.0f, posIntersection.x, posIntersection.y, posIntersection.z);
+				}
 			}
-		}
+		//}
 	}
 
 	return vec4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -244,7 +253,7 @@ void ObjectManager::defineGameObjectAround(float elapsedTime)
 	GameObject* currentObject;
 	GameObject* otherObject;
 
-	float coefDistance = 1;
+	float coefDistance = 2;
 
 	for(i = 0; i < (this->listOfObject.size() - 1); ++i)
 	{
@@ -263,7 +272,8 @@ void ObjectManager::defineGameObjectAround(float elapsedTime)
 					if(otherObject->getComponents()->getRigidBody()->getRigidBodyStatus())
 					{
 
-						allowedDistance = abs(currentObject->getAxeSize() * coefDistance);
+						//allowedDistance = abs(currentObject->getAxeSize() * coefDistance);
+						allowedDistance = currentObject->getComponents()->getRigidBody()->getSize() * coefDistance;
 
 						distance = abs(getDistanceBetweenGameObjects(&currentObject->getCenterOfObject(), &otherObject->getCenterOfObject(), currentObject->getVelocity(), otherObject->getVelocity(), 1.0f));
 
@@ -811,7 +821,9 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 				RigidBody* otherObjectRigidBodyGeneric;
 				otherObjectRigidBodyGeneric = currentObjectAround->getComponents()->getRigidBody();
 
-				distance1 = currentObjectRigidBodyGeneric->getSize() + otherObjectRigidBodyGeneric->getSize();
+				float size = currentObjectRigidBodyGeneric->getSize();
+
+				distance1 = size + otherObjectRigidBodyGeneric->getSize();
 
 				distance2 = MF.distanceBetween2points(currentObject->getCenterOfObject(), currentObjectAround->getCenterOfObject());
 				crossing = false;
@@ -820,6 +832,7 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 
 					for(j = 0; j < currentObjectRigidBodyGeneric->getListIndexesFaces()->size(); ++j)
 					{
+
 						indexVertexA = currentObjectRigidBodyGeneric->getListOfIndexes()->at(currentObjectRigidBodyGeneric->getListIndexesFaces()->at(j).x);
 						indexVertexB = currentObjectRigidBodyGeneric->getListOfIndexes()->at(currentObjectRigidBodyGeneric->getListIndexesFaces()->at(j).y);
 						indexVertexC = currentObjectRigidBodyGeneric->getListOfIndexes()->at(currentObjectRigidBodyGeneric->getListIndexesFaces()->at(j).z);
@@ -921,13 +934,13 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 						bounciness = currentObject->getComponents()->getGravity()->getBounciness();
 						resistance = currentObject->getComponents()->getGravity()->getResistance();
 								
-						currentObject->getComponents()->getGravity()->addForce(impactForce1 / ((resistance + bounciness) * 5),  currentObject->getVelocity(), elapsedTime);
+						currentObject->getComponents()->getGravity()->addForce(impactForce1 / ((resistance + bounciness) * 1),  currentObject->getVelocity(), elapsedTime);
 
 						//if(currentObject->getComponents()
 						bounciness = currentObjectAround->getComponents()->getGravity()->getBounciness();
 						resistance = currentObjectAround->getComponents()->getGravity()->getResistance();
 
-						currentObjectAround->getComponents()->getGravity()->addForce(impactForce2 / ((resistance + bounciness) * 5), currentObjectAround->getVelocity(), elapsedTime);
+						currentObjectAround->getComponents()->getGravity()->addForce(impactForce2 / ((resistance + bounciness) * 1), currentObjectAround->getVelocity(), elapsedTime);
 				
 					}
 				}		

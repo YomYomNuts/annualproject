@@ -34,7 +34,8 @@ public:
 	void Merge(vec3 positionImpact, Generic_Object * go, std::vector<unsigned short> * listVerticesConvexPolygon, std::vector<unsigned short> * listIndexNeighbour);
 	std::vector<unsigned short> * RemoveVertexAround(vec3 positionImpact, float radius);
 	void TranslateAndLookAtAndScale(const vec3 & positionCenterRotation, const vec3 & positionLookAt, const vec3 & positionTranlate, float valueScale);
-	
+	void calculateCenterOfObject();
+
 	~Generic_Object(void);
 
 	vector<GLushort>* indexesList;
