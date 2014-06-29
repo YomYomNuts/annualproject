@@ -21,6 +21,20 @@ std::vector<unsigned short>* DelaunayGenerator::LaunchCircleGeneration(float rad
 	int i = 0;
 	std::vector<vec3*> * listVerticesConvexPolygon = new std::vector<vec3*>();
 	float powRadiusZone = radiusZone * radiusZone;
+	
+	int nbVerticesCircle = nbVerticesGenerate / 4;
+	float angle = 360.0f / nbVerticesCircle;
+	while (i < nbVerticesCircle)
+	{
+		vec4 newPosition = esgiRotateZ(i * angle) * vec4(radiusZone, 0, 0, 0);
+		
+		listVertex->push_back(vec3(newPosition.x, newPosition.y, newPosition.z));
+		DelaunayGenerator::AddPoint(&listVertex->at(listVertex->size() - 1), listVertex, listEdges, listFaces, listVerticesConvexPolygon);
+		ConvexHull::DivideAndConquer(listVertex, listVerticesConvexPolygon);
+
+		++i;
+	}
+	
 	while (i < nbVerticesGenerate)
 	{
 		vec3 newPosition(RandomFloatTemp(-radiusZone, radiusZone), 0, 0);
