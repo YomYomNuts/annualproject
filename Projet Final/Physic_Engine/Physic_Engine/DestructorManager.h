@@ -16,7 +16,7 @@ private:
 public:
 	DestructorManager(void);
 	~DestructorManager(void);
-	static void LaunchDestruction(ObjectManager & gom, Generic_Object * goImpact, vec3 positionImpact, vec3 positionLookAt);
+	static void LaunchDestruction(ObjectManager & gom, Generic_Object * goImpact, vec3 positionImpact, vec3 positionLookAt, float radius, float depth, int nbPointsCircle, int nbParticlesVoronoi);
 protected:
 private:
 };
