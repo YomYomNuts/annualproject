@@ -16,8 +16,8 @@ DestructorManager::~DestructorManager(void)
 
 void DestructorManager::LaunchDestruction(ObjectManager & gom, Generic_Object * goImpact, vec3 positionImpact, vec3 positionLookAt)
 {
-	float radius = 30.0f;
-	float height = 20.0f;
+	float radius = 45.0f;
+	float height = 30.0f;
 	int nbPointsCircle = 40;
 	int nbParticlesVoronoi = 5;
 
@@ -27,7 +27,7 @@ void DestructorManager::LaunchDestruction(ObjectManager & gom, Generic_Object * 
 	std::vector<unsigned short> * listVerticesConvexPolygon = DelaunayGenerator::LaunchCircleGeneration(radius, nbPointsCircle, go->verticesList, go->listEdges, go->listFaces);
 	ParaboloidSurfaceProjection::LaunchProjection(radius, height, go->verticesList, go->listEdges, go->listFaces);
 	go->Scale(0.7f);
-	//VoronoiGenerator::GenerateVoronoi(gom, go, positionImpact, positionLookAt, vec3(0.0f, -height/2, 0.0f), radius, height, 0.7f, nbParticlesVoronoi);
+	VoronoiGenerator::GenerateVoronoi(gom, go, positionImpact, positionLookAt, vec3(0.0f, -height/2, 0.0f), radius, height, 0.7f, nbParticlesVoronoi);
 	go->TranslateAndLookAtAndScale(positionImpact, positionLookAt, vec3(0.0f, -height/2, 0.0f), 1.3f);
 	go->CalculateIndexes();
 	goImpact->Merge(positionImpact, go, listVerticesConvexPolygon, listIndexNeighbour);

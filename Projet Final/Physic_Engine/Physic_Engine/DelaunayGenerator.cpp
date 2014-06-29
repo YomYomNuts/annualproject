@@ -75,14 +75,27 @@ void DelaunayGenerator::LaunchTriangulationGeneration(Generic_Object * go, std::
 	std::vector<Face*> * listFaces = new std::vector<Face*>();
 	std::map<unsigned short, unsigned short> * listIndexCorresponding = new std::map<unsigned short, unsigned short>();
 
+	vec3 centerOfFace;
+	for (unsigned int i = 0; i < listIndexVerticesFaces->size(); ++i)
+		centerOfFace += go->verticesList->at(listIndexVerticesFaces->at(i));
+
+	if (listIndexVerticesFaces->size() > 0)
+		centerOfFace /= listIndexVerticesFaces->size();
+
+	mat4 matrixRotation = esgiLookAt(centerOfFace, vec3(centerOfFace.x, 30, 1), normalFace);
+
 	for (unsigned int i = 0; i < listIndexVerticesFaces->size(); ++i)
 	{
+		vec4 newVertex = matrixRotation * vec4(go->verticesList->at(listIndexVerticesFaces->at(i)), 0);
+
 		listIndexCorresponding->insert(std::pair<unsigned short, unsigned int>(i, listIndexVerticesFaces->at(i)));
-		listVertex->push_back(go->verticesList->at(listIndexVerticesFaces->at(i)));
+
+		listVertex->push_back(vec3(newVertex.x, newVertex.y, newVertex.z));
+
 		DelaunayGenerator::AddPoint(&listVertex->at(i), listVertex, listEdges, listFaces, listVerticesConvexPolygon);
 		ConvexHull::DivideAndConquer(listVertex, listVerticesConvexPolygon);
 	}
-	Face::VerifyFaces(listVertex, listFaces, normalFace);
+	Face::VerifyFaces(listVertex, listFaces, vec3(0, 1, 0));
 
 	for (unsigned int i = 0; i < listEdges->size(); ++i)
 	{

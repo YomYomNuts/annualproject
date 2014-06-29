@@ -114,7 +114,8 @@ void VoronoiGenerator::GenerateVoronoi(ObjectManager & gom, const Generic_Object
 	}
 
 	// Generate the Shrapnels
-	voronoicell c;double *pp;
+	voronoicell c;
+	double *pp;
 	c_loop_all vl(con);
 	if(vl.start())
 	{
@@ -124,7 +125,6 @@ void VoronoiGenerator::GenerateVoronoi(ObjectManager & gom, const Generic_Object
 			{
 				Generic_Object * cell = new Generic_Object();
 				gom.addObject(cell);
-
 				pp = con.p[vl.ijk] + con.ps*vl.q;
 
 				// Get the vertices and the edges
@@ -162,7 +162,7 @@ void VoronoiGenerator::GenerateVoronoi(ObjectManager & gom, const Generic_Object
 				cell->setWireframeMode(false);
 				cell->getComponents()->getRigidBody()->activateRigidBody(true);
 				cell->getComponents()->getGravity()->setUseGravity(true);
-				//cell->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*cell->listIndexesWireframe);
+				cell->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*cell->listIndexesWireframe);
 				cell->getComponents()->getGravity()->addForce(vec3(0.0f, -30.0f, 0.0f), cell->getVelocity(), 1.0);
 			}
 		} while(vl.inc());
