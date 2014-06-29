@@ -403,20 +403,9 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 		this->indexesList->push_back(go->indexesList->at(i) + numberVertices);
 	}
 
-	/*
-	std::vector<unsigned short> * listVecticesMerge = new std::vector<unsigned short>();
-
-
-
-	delete listVecticesMerge;
-	*/
-
 
 	// Calculate the new edge, face
 	mat4 matrixRotation = esgiLookAt(positionImpact, vec3(0, -30, -1), vec3(0, -1, 0));
-	mat4 viewMatrix;
-	viewMatrix.IdentityScale(1.0f);
-	//mat4 viewMatrix = esgiMultiplyMatrix(matrixRotation, matrixScale);
 	std::vector<Edge*> listNewEdges;
 	std::vector<unsigned short> listVertexUse;
 	for (unsigned int i = 0; i < listIndexNeighbour->size(); ++i)
