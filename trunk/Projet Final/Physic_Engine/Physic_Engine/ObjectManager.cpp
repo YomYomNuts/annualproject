@@ -459,7 +459,6 @@ void ObjectManager::updateCollisionWithSphere(GameObject* currentObject, float e
 
 void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float elapsedTime)
 {
-	//reorientObject(currentObject, elapsedTime);
 	GameObject* currentObjectAround;
 	unsigned int i;
 	unsigned int j;
@@ -490,11 +489,8 @@ void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float ela
 
 					resistance = currentObject->getComponents()->getGravity()->getResistance();
 					bounciness = currentObject->getComponents()->getGravity()->getBounciness();
-
-								
-								
-					currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, - currentObject->getVelocity()->y / bounciness, currentObject->getVelocity()->z / resistance));
-							
+		
+					currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, - currentObject->getVelocity()->y / bounciness, currentObject->getVelocity()->z / resistance));	
 				}
 
 				break;
@@ -542,9 +538,6 @@ void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float ela
 								
 
 						// Test the first segement of the triangle
-						/*impact = isSegmentInsideObject(otherObjectRigidBody->getListOfNormals(), otherObjectRigidBody->getListOfCenterOfGravities(), otherObjectRigidBody->getListOfIndexes(),
-							otherObjectRigidBody->getListIndexesFaces(), otherObjectRigidBody->getListOfVertices(),vertexA, vertexB,
-							currentObject->getVelocity(), elapsedTime);*/
 						impact = isSegmentInsideObject(otherObjectRigidBody, vertexA, vertexB,currentObject->getVelocity(), elapsedTime);
 
 						crossing = (impact.x == 1.0f? true: false);
@@ -553,9 +546,6 @@ void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float ela
 						if(!crossing)
 						{
 							// Test the second segment of the triangle
-							/*impact = isSegmentInsideObject(otherObjectRigidBody->getListOfNormals(), otherObjectRigidBody->getListOfCenterOfGravities(), otherObjectRigidBody->getListOfIndexes(),
-															otherObjectRigidBody->getListIndexesFaces(), otherObjectRigidBody->getListOfVertices(),vertexB, vertexC,
-															currentObject->getVelocity(), elapsedTime);*/
 							impact = isSegmentInsideObject(otherObjectRigidBody, vertexB, vertexC,currentObject->getVelocity(), elapsedTime);
 							crossing = (impact.x == 1.0f? true: false);
 							impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -563,10 +553,6 @@ void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float ela
 							if(!crossing)
 							{
 								// Test the third segement of the triangle
-								/*impact = isSegmentInsideObject(otherObjectRigidBody->getListOfNormals(), otherObjectRigidBody->getListOfCenterOfGravities(), otherObjectRigidBody->getListOfIndexes(),
-																otherObjectRigidBody->getListIndexesFaces(), otherObjectRigidBody->getListOfVertices(),vertexC, vertexA,
-																currentObject->getVelocity(), elapsedTime);*/
-							
 								impact = isSegmentInsideObject(otherObjectRigidBody, vertexC, vertexA,currentObject->getVelocity(), elapsedTime);
 								crossing = (impact.x == 1.0f? true: false);
 								impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -642,7 +628,6 @@ void ObjectManager::updateCollisionWithCube(GameObject* currentObject, float ela
 
 void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float elapsedTime)
 {
-	//reorientObject(currentObject, elapsedTime);
 	GameObject* currentObjectAround;
 	float distance;
 	unsigned int i;
@@ -721,10 +706,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 								
 
 						// Test the first segement of the triangle
-						/*impact = isSegmentInsideObject(otherObjectRigidBodyCube->getListOfNormals(), otherObjectRigidBodyCube->getListOfCenterOfGravities(), otherObjectRigidBodyCube->getListOfIndexes(),
-							otherObjectRigidBodyCube->getListIndexesFaces(), otherObjectRigidBodyCube->getListOfVertices(),vertexA, vertexB,
-							currentObject->getVelocity(), elapsedTime);*/
-
 						impact = isSegmentInsideObject(otherObjectRigidBodyCube, vertexA, vertexB,currentObject->getVelocity(), elapsedTime);
 						crossing = (impact.x == 1.0f? true: false);
 						impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -732,10 +713,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 						if(!crossing)
 						{
 							// Test the second segment of the triangle
-							/*impact = isSegmentInsideObject(otherObjectRigidBodyCube->getListOfNormals(), otherObjectRigidBodyCube->getListOfCenterOfGravities(), otherObjectRigidBodyCube->getListOfIndexes(),
-															otherObjectRigidBodyCube->getListIndexesFaces(), otherObjectRigidBodyCube->getListOfVertices(),vertexB, vertexC,
-															currentObject->getVelocity(), elapsedTime);*/
-						
 							impact = isSegmentInsideObject(otherObjectRigidBodyCube, vertexB, vertexC,currentObject->getVelocity(), elapsedTime);
 							crossing = (impact.x == 1.0f? true: false);
 							impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -743,10 +720,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 							if(!crossing)
 							{
 								// Test the third segement of the triangle
-								/*impact = isSegmentInsideObject(otherObjectRigidBodyCube->getListOfNormals(), otherObjectRigidBodyCube->getListOfCenterOfGravities(), otherObjectRigidBodyCube->getListOfIndexes(),
-																otherObjectRigidBodyCube->getListIndexesFaces(), otherObjectRigidBodyCube->getListOfVertices(),vertexC, vertexA,
-																currentObject->getVelocity(), elapsedTime);*/
-							
 								impact = isSegmentInsideObject(otherObjectRigidBodyCube, vertexC, vertexA,currentObject->getVelocity(), elapsedTime);
 								crossing = (impact.x == 1.0f? true: false);
 								impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -845,10 +818,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 								
 
 						// Test the first segement of the triangle
-						/*impact = isSegmentInsideObject(otherObjectRigidBodyGeneric->getListOfNormals(), otherObjectRigidBodyGeneric->getListOfCenterOfGravities(), otherObjectRigidBodyGeneric->getListOfIndexes(),
-							otherObjectRigidBodyGeneric->getListIndexesFaces(), otherObjectRigidBodyGeneric->getListOfVertices(),vertexA, vertexB,
-							currentObject->getVelocity(), elapsedTime);*/
-					
 						impact = isSegmentInsideObject(otherObjectRigidBodyGeneric, vertexA, vertexB,currentObject->getVelocity(), elapsedTime);
 						crossing = (impact.x == 1.0f? true: false);
 						impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -856,10 +825,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 						if(!crossing)
 						{
 							// Test the second segment of the triangle
-							/*impact = isSegmentInsideObject(otherObjectRigidBodyGeneric->getListOfNormals(), otherObjectRigidBodyGeneric->getListOfCenterOfGravities(), otherObjectRigidBodyGeneric->getListOfIndexes(),
-															otherObjectRigidBodyGeneric->getListIndexesFaces(), otherObjectRigidBodyGeneric->getListOfVertices(),vertexB, vertexC,
-															currentObject->getVelocity(), elapsedTime);*/
-						
 							impact = isSegmentInsideObject(otherObjectRigidBodyGeneric, vertexB, vertexC,currentObject->getVelocity(), elapsedTime);
 							crossing = (impact.x == 1.0f? true: false);
 							impactPoint = vec3(impact.y, impact.z, impact.w);
@@ -867,10 +832,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 							if(!crossing)
 							{
 								// Test the third segement of the triangle
-								/*impact = isSegmentInsideObject(otherObjectRigidBodyGeneric->getListOfNormals(), otherObjectRigidBodyGeneric->getListOfCenterOfGravities(), otherObjectRigidBodyGeneric->getListOfIndexes(),
-																otherObjectRigidBodyGeneric->getListIndexesFaces(), otherObjectRigidBodyGeneric->getListOfVertices(),vertexC, vertexA,
-																currentObject->getVelocity(), elapsedTime);*/
-
 								impact = isSegmentInsideObject(otherObjectRigidBodyGeneric, vertexC, vertexA,currentObject->getVelocity(), elapsedTime);
 								crossing = (impact.x == 1.0f? true: false);
 								impactPoint = vec3(impact.y, impact.z, impact.w);
