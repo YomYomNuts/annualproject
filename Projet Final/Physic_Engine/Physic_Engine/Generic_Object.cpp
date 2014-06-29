@@ -403,461 +403,277 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 		this->indexesList->push_back(go->indexesList->at(i) + numberVertices);
 	}
 
+	/*
+	std::vector<unsigned short> * listVecticesMerge = new std::vector<unsigned short>();
+
+
+
+	delete listVecticesMerge;
+	*/
+
+
 	// Calculate the new edge, face
 	mat4 matrixRotation = esgiLookAt(positionImpact, vec3(0, -30, -1), vec3(0, -1, 0));
 	mat4 viewMatrix;
 	viewMatrix.IdentityScale(1.0f);
 	//mat4 viewMatrix = esgiMultiplyMatrix(matrixRotation, matrixScale);
 	std::vector<Edge*> listNewEdges;
-	if (listIndexNeighbour->size() > listVerticesConvexPolygon->size())
+	std::vector<unsigned short> listVertexUse;
+	for (unsigned int i = 0; i < listIndexNeighbour->size(); ++i)
 	{
-		for (unsigned int i = 0; i < listIndexNeighbour->size(); ++i)
-		{
-			unsigned short currentIndex = listIndexNeighbour->at(i);
-			vec4 currentVertex(this->verticesList->at(currentIndex), 0);
-			int closestVertices = -1;
-			float closestDistance = 1000000;
+		unsigned short currentIndex = listIndexNeighbour->at(i);
+		vec3 currentVertex = this->verticesList->at(currentIndex);
+		int closestVertices = -1;
+		float closestDistance = 1000000;
 
-			for (unsigned int j = 0; j < listVerticesConvexPolygon->size(); ++j)
+		for (unsigned int j = 0; j < listVerticesConvexPolygon->size(); ++j)
+		{
+			unsigned short tempIndex = listVerticesConvexPolygon->at(j);
+			vec3 tempVertex = go->verticesList->at(tempIndex);
+			float size = (currentVertex - tempVertex).Length();
+			if (size < closestDistance)
 			{
-				unsigned short tempIndex = listVerticesConvexPolygon->at(j);
-				vec4 tempVertex = vec4(go->verticesList->at(tempIndex), 0);
-				float size = (currentVertex - tempVertex).Length();
-				if (size < closestDistance)
-				{
-					closestVertices = tempIndex;
-					closestDistance = size;
-				}
-			}
-			if (closestVertices != -1)
-			{
-				Edge * edge = new Edge(currentIndex, closestVertices + numberVertices);
-				this->listEdges->push_back(edge);
-				listNewEdges.push_back(edge);
-				this->listIndexesWireframe->push_back(currentIndex);
-				this->listIndexesWireframe->push_back(closestVertices + numberVertices);
+				closestVertices = tempIndex;
+				closestDistance = size;
 			}
 		}
-
-		// Add the edge of jonction and create the faces
-		for (unsigned int i = 0; i < listVerticesConvexPolygon->size(); ++i)
+		if (closestVertices != -1)
 		{
-			unsigned short currentIndex = listVerticesConvexPolygon->at(i) + numberVertices;
-			unsigned short nextIndex = listVerticesConvexPolygon->at(0) + numberVertices;
-			if (i + 1 < listVerticesConvexPolygon->size())
-				nextIndex = listVerticesConvexPolygon->at(i + 1) + numberVertices;
-			vec3 currentVertex = this->verticesList->at(currentIndex);
-			vec3 nextVertex = this->verticesList->at(nextIndex);
-
-			for (unsigned int j = 0; j < listNewEdges.size(); ++j)
-			{
-				Edge * tempEdge = listNewEdges[j];
-				if (tempEdge->indexVertex2 == currentIndex)
-				{
-					// Creation of the triangle face
-					for (unsigned int k = j + 1; k < listNewEdges.size(); ++k)
-					{
-						Edge * tempEdge1 = listNewEdges[k];
-						if (tempEdge1->indexVertex2 == currentIndex)
-						{
-							for (unsigned int l = 0; l < this->listEdges->size(); ++l)
-							{
-								Edge * tempEdge2 = this->listEdges->at(l);
-								if ((tempEdge2->indexVertex1 == tempEdge->indexVertex1 && tempEdge2->indexVertex2 == tempEdge1->indexVertex1) ||
-									(tempEdge2->indexVertex2 == tempEdge->indexVertex1 && tempEdge2->indexVertex1 == tempEdge1->indexVertex1))
-								{
-									Face * face = new Face(tempEdge, tempEdge1, tempEdge2);
-									face->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-									this->listFaces->push_back(face);
-								
-									// Add the indexes
-									unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
-									if (!face->normalInverse)
-									{
-										this->indexesList->push_back(index0);
-										this->indexesList->push_back(index1);
-									}
-									else
-									{
-										this->indexesList->push_back(index1);
-										this->indexesList->push_back(index0);
-									}
-									if (index0 != tempEdge1->indexVertex1 && index1 != tempEdge1->indexVertex1)
-										this->indexesList->push_back(tempEdge1->indexVertex1);
-									else
-										this->indexesList->push_back(tempEdge1->indexVertex2);
-								}
-							}
-						}
-					}
-
-					// Creation of the specialize face
-					vec3 currentVertexNeighbour = this->verticesList->at(tempEdge->indexVertex1);
-					for (unsigned int k = 0; k < listNewEdges.size(); ++k)
-					{
-						Edge * tempEdge1 = listNewEdges[k];
-						if (tempEdge1->indexVertex2 == nextIndex)
-						{
-							vec3 nextVertexNeighbour = this->verticesList->at(tempEdge1->indexVertex1);
-							for (unsigned int l = 0; l < this->listEdges->size(); ++l)
-							{
-								Edge * tempEdge2 = this->listEdges->at(l);
-								if ((tempEdge2->indexVertex1 == tempEdge->indexVertex1 && tempEdge2->indexVertex2 == tempEdge1->indexVertex1) ||
-									(tempEdge2->indexVertex2 == tempEdge->indexVertex1 && tempEdge2->indexVertex1 == tempEdge1->indexVertex1))
-								{
-									// Create the new Edge
-									float size1 = (currentVertex - nextVertexNeighbour).Length();
-									float size2 = (currentVertexNeighbour - nextVertex).Length();
-									Edge * edge;
-									if(size1 < size2)
-									{
-										edge = new Edge(currentIndex, tempEdge1->indexVertex1);
-										this->listEdges->push_back(edge);
-										this->listIndexesWireframe->push_back(currentIndex);
-										this->listIndexesWireframe->push_back(tempEdge1->indexVertex1);
-									}
-									else
-									{
-										edge = new Edge(tempEdge->indexVertex1, nextIndex);
-										this->listEdges->push_back(edge);
-										this->listIndexesWireframe->push_back(tempEdge->indexVertex1);
-										this->listIndexesWireframe->push_back(nextIndex);
-
-										// Change the edge
-										Edge * temp = tempEdge;
-										tempEdge = tempEdge1;
-										tempEdge1 = temp;
-									}
-
-									// Create the first face
-									Face * face1 = new Face(tempEdge, tempEdge2, edge);
-									face1->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-									this->listFaces->push_back(face1);
-
-									// Add the indexes
-									unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
-									if (!face1->normalInverse)
-									{
-										this->indexesList->push_back(index0);
-										this->indexesList->push_back(index1);
-									}
-									else
-									{
-										this->indexesList->push_back(index1);
-										this->indexesList->push_back(index0);
-									}
-									if (index0 != tempEdge2->indexVertex1 && index1 != tempEdge2->indexVertex1)
-										this->indexesList->push_back(tempEdge2->indexVertex1);
-									else
-										this->indexesList->push_back(tempEdge2->indexVertex2);
-								
-									// Create the second face
-									Edge * tempEdge3 = NULL;
-									for (unsigned int m = 0; m < this->listEdges->size(); ++m)
-									{
-										tempEdge3 = this->listEdges->at(m);
-										if ((tempEdge3->indexVertex1 == currentIndex && tempEdge3->indexVertex2 == nextIndex) ||
-											(tempEdge3->indexVertex2 == currentIndex && tempEdge3->indexVertex1 == nextIndex))
-											break;
-									}
-									Face * face2 = new Face(tempEdge1, tempEdge3, edge);
-									face2->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-									this->listFaces->push_back(face2);
-								
-									// Add the indexes
-									index0 = tempEdge1->indexVertex1;
-									index1 = tempEdge1->indexVertex2;
-									if (!face2->normalInverse)
-									{
-										this->indexesList->push_back(index0);
-										this->indexesList->push_back(index1);
-									}
-									else
-									{
-										this->indexesList->push_back(index1);
-										this->indexesList->push_back(index0);
-									}
-									if (index0 != tempEdge3->indexVertex1 && index1 != tempEdge3->indexVertex1)
-										this->indexesList->push_back(tempEdge3->indexVertex1);
-									else
-										this->indexesList->push_back(tempEdge3->indexVertex2);
-
-									if(size1 >= size2)
-									{
-										// Revert the edge changement
-										Edge * temp = tempEdge;
-										tempEdge = tempEdge1;
-										tempEdge1 = temp;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			Edge * edge = new Edge(currentIndex, closestVertices + numberVertices);
+			this->listEdges->push_back(edge);
+			listNewEdges.push_back(edge);
+			this->listIndexesWireframe->push_back(currentIndex);
+			this->listIndexesWireframe->push_back(closestVertices + numberVertices);
+			listVertexUse.push_back(closestVertices + numberVertices);
 		}
 	}
-	else
+
+	// Add the external face
+	for (int i = 0; i < listVerticesConvexPolygon->size(); ++i)
 	{
-		std::vector<unsigned short> listVertexUse;
-		for (unsigned int i = 0; i < listVerticesConvexPolygon->size(); ++i)
+		unsigned short index = listVerticesConvexPolygon->at(i) + numberVertices;
+		bool findIndex = false;
+		for (unsigned int j = 0; j < listVertexUse.size(); ++j)
 		{
-			unsigned short currentIndex = listVerticesConvexPolygon->at(i);
-			vec4 currentVertex(go->verticesList->at(currentIndex), 0);
+			if (listVertexUse[j] == index)
+			{
+				findIndex = true;
+				break;
+			}
+		}
+		if (!findIndex)
+		{
+			vec3 vertex0 = this->verticesList->at(index);
 			int closestVertices = -1;
 			float closestDistance = 1000000;
-
 			for (unsigned int j = 0; j < listIndexNeighbour->size(); ++j)
 			{
 				unsigned short tempIndex = listIndexNeighbour->at(j);
-				vec4 tempVertex = vec4(this->verticesList->at(tempIndex), 0);
-				float size = (currentVertex - tempVertex).Length();
-				if (size < closestDistance)
+				vec3 vertex1 = this->verticesList->at(tempIndex);
+				float dist = (vertex0 - vertex1).Length();
+				if (dist < closestDistance)
 				{
+					closestDistance = dist;
 					closestVertices = tempIndex;
-					closestDistance = size;
 				}
 			}
 			if (closestVertices != -1)
 			{
-				Edge * edge = new Edge(currentIndex + numberVertices, closestVertices);
+				Edge * edge = new Edge(closestVertices, index);
 				this->listEdges->push_back(edge);
 				listNewEdges.push_back(edge);
-				this->listIndexesWireframe->push_back(currentIndex + numberVertices);
 				this->listIndexesWireframe->push_back(closestVertices);
-				listVertexUse.push_back(closestVertices);
+				this->listIndexesWireframe->push_back(index);
 			}
 		}
+	}
 
-		// Add the external face
-		for (int i = 0; i < listIndexNeighbour->size(); ++i)
+	// Add the edge of jonction and create the faces
+	for (unsigned int i = 0; i < listVerticesConvexPolygon->size(); ++i)
+	{
+		unsigned short currentIndex = listVerticesConvexPolygon->at(i) + numberVertices;
+		unsigned short nextIndex = listVerticesConvexPolygon->at(0) + numberVertices;
+		if (i + 1 < listVerticesConvexPolygon->size())
+			nextIndex = listVerticesConvexPolygon->at(i + 1) + numberVertices;
+		vec3 currentVertex = this->verticesList->at(currentIndex);
+		vec3 nextVertex = this->verticesList->at(nextIndex);
+
+		for (unsigned int j = 0; j < listNewEdges.size(); ++j)
 		{
-			unsigned short index = listIndexNeighbour->at(i);
-			bool findIndex = false;
-			for (unsigned int j = 0; j < listVertexUse.size(); ++j)
+			Edge * tempEdge = listNewEdges[j];
+			if (tempEdge->indexVertex2 == currentIndex)
 			{
-				if (listVertexUse[j] == index)
+				// Creation of the triangle face
+				for (unsigned int k = j + 1; k < listNewEdges.size(); ++k)
 				{
-					findIndex = true;
-					break;
-				}
-			}
-			if (!findIndex)
-			{
-				Edge * edge1 = NULL, * edge2 = NULL;
-				unsigned short newindex1 = 0, newindex2 = 0;
-				for (unsigned int j = 0; j < listIndexNeighbour->size(); ++j)
-				{
-					unsigned short tempIndex = listIndexNeighbour->at(j);
-					for (unsigned int k = 0; k < this->listEdges->size(); ++k)
+					Edge * tempEdge1 = listNewEdges[k];
+					if (tempEdge1->indexVertex2 == currentIndex)
 					{
-						Edge * tempEdge = this->listEdges->at(k);
-						if ((tempEdge->indexVertex1 == index && tempEdge->indexVertex2 == tempIndex) ||
-							(tempEdge->indexVertex2 == index && tempEdge->indexVertex1 == tempIndex))
+						for (unsigned int l = 0; l < this->listEdges->size(); ++l)
 						{
-							if (edge1 == NULL)
+							Edge * tempEdge2 = this->listEdges->at(l);
+							if ((tempEdge2->indexVertex1 == tempEdge->indexVertex1 && tempEdge2->indexVertex2 == tempEdge1->indexVertex1) ||
+								(tempEdge2->indexVertex2 == tempEdge->indexVertex1 && tempEdge2->indexVertex1 == tempEdge1->indexVertex1))
 							{
-								edge1 = tempEdge;
-								newindex1 = tempIndex;
-							}
-							else
-							{
-								edge2 = tempEdge;
-								newindex2 = tempIndex;
-							}
-							break;
-						}
-					}
-					if (edge1 != NULL && edge2 != NULL)
-						break;
-				}
-				
-				if (edge1 != NULL && edge2 != NULL)
-				{
-					Edge * edge = new Edge(newindex1, newindex2);
-					this->listEdges->push_back(edge);
-					this->listIndexesWireframe->push_back(newindex1);
-					this->listIndexesWireframe->push_back(newindex2);
-
-					Face * face = new Face(edge1, edge2, edge);
-					face->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-					this->listFaces->push_back(face);
+								Face * face = new Face(tempEdge, tempEdge1, tempEdge2);
+								face->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
+								this->listFaces->push_back(face);
 								
-					// Add the indexes
-					unsigned short index0 = edge1->indexVertex1, index1 = edge1->indexVertex2;
-					if (!face->normalInverse)
-					{
-						this->indexesList->push_back(index0);
-						this->indexesList->push_back(index1);
-					}
-					else
-					{
-						this->indexesList->push_back(index1);
-						this->indexesList->push_back(index0);
-					}
-					if (index0 != edge2->indexVertex1 && index1 != edge2->indexVertex1)
-						this->indexesList->push_back(edge2->indexVertex1);
-					else
-						this->indexesList->push_back(edge2->indexVertex2);
-					listIndexNeighbour->erase(listIndexNeighbour->begin() + i);
-					--i;
-				}
-			}
-		}
-
-		// Add the edge of jonction and create the faces
-		for (unsigned int i = 0; i < listIndexNeighbour->size(); ++i)
-		{
-			unsigned short currentIndex = listIndexNeighbour->at(i);
-			vec3 currentVertex = this->verticesList->at(currentIndex);
-
-			for (unsigned int j = 0; j < listNewEdges.size(); ++j)
-			{
-				Edge * tempEdge = listNewEdges[j];
-				if (tempEdge->indexVertex2 == currentIndex)
-				{
-					// Creation of the triangle face
-					for (unsigned int k = j + 1; k < listNewEdges.size(); ++k)
-					{
-						Edge * tempEdge1 = listNewEdges[k];
-						if (tempEdge1->indexVertex2 == currentIndex)
-						{
-							for (unsigned int l = 0; l < this->listEdges->size(); ++l)
-							{
-								Edge * tempEdge2 = this->listEdges->at(l);
-								if ((tempEdge2->indexVertex1 == tempEdge->indexVertex1 && tempEdge2->indexVertex2 == tempEdge1->indexVertex1) ||
-									(tempEdge2->indexVertex2 == tempEdge->indexVertex1 && tempEdge2->indexVertex1 == tempEdge1->indexVertex1))
+								// Add the indexes
+								unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
+								if (!face->normalInverse)
 								{
-									Face * face = new Face(tempEdge, tempEdge1, tempEdge2);
-									face->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-									this->listFaces->push_back(face);
-								
-									// Add the indexes
-									unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
-									if (!face->normalInverse)
-									{
-										this->indexesList->push_back(index0);
-										this->indexesList->push_back(index1);
-									}
-									else
-									{
-										this->indexesList->push_back(index1);
-										this->indexesList->push_back(index0);
-									}
-									if (index0 != tempEdge1->indexVertex1 && index1 != tempEdge1->indexVertex1)
-										this->indexesList->push_back(tempEdge1->indexVertex1);
-									else
-										this->indexesList->push_back(tempEdge1->indexVertex2);
+									this->indexesList->push_back(index0);
+									this->indexesList->push_back(index1);
 								}
+								else
+								{
+									this->indexesList->push_back(index1);
+									this->indexesList->push_back(index0);
+								}
+								if (index0 != tempEdge1->indexVertex1 && index1 != tempEdge1->indexVertex1)
+									this->indexesList->push_back(tempEdge1->indexVertex1);
+								else
+									this->indexesList->push_back(tempEdge1->indexVertex2);
 							}
 						}
 					}
+				}
 
-					// Creation of the specialize face
-					vec3 currentVertexNeighbour = this->verticesList->at(tempEdge->indexVertex1);
-					for (unsigned int a = i + 1; a < listIndexNeighbour->size(); ++a)
+				// Creation of the triangle face
+				for (unsigned int k = 0; k < listNewEdges.size(); ++k)
+				{
+					Edge * tempEdge1 = listNewEdges[k];
+					if (tempEdge1->indexVertex2 == nextIndex && tempEdge1->indexVertex1 == tempEdge->indexVertex1)
 					{
-						unsigned short nextIndex = listIndexNeighbour->at(a);
-						vec3 nextVertex = this->verticesList->at(nextIndex);
-
-						for (unsigned int b = 0; b < this->listEdges->size(); ++b)
+						for (unsigned int l = 0; l < this->listEdges->size(); ++l)
 						{
-							Edge * tempEdge2 = this->listEdges->at(b);
+							Edge * tempEdge2 = this->listEdges->at(l);
 							if ((tempEdge2->indexVertex1 == currentIndex && tempEdge2->indexVertex2 == nextIndex) ||
 								(tempEdge2->indexVertex2 == currentIndex && tempEdge2->indexVertex1 == nextIndex))
 							{
-								for (unsigned int k = 0; k < listNewEdges.size(); ++k)
+								Face * face = new Face(tempEdge, tempEdge1, tempEdge2);
+								face->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
+								this->listFaces->push_back(face);
+								
+								// Add the indexes
+								unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
+								if (!face->normalInverse)
 								{
-									Edge * tempEdge1 = listNewEdges[k];
-									if (tempEdge1->indexVertex2 == nextIndex)
-									{
-										vec3 nextVertexNeighbour = this->verticesList->at(tempEdge1->indexVertex1);
-										
-										// Create the new Edge
-										float size1 = (currentVertex - nextVertexNeighbour).Length();
-										float size2 = (currentVertexNeighbour - nextVertex).Length();
-										Edge * edge;
-										if(size1 < size2)
-										{
-											edge = new Edge(currentIndex, tempEdge1->indexVertex1);
-											this->listEdges->push_back(edge);
-											this->listIndexesWireframe->push_back(currentIndex);
-											this->listIndexesWireframe->push_back(tempEdge1->indexVertex1);
-										}
-										else
-										{
-											edge = new Edge(tempEdge->indexVertex1, nextIndex);
-											this->listEdges->push_back(edge);
-											this->listIndexesWireframe->push_back(tempEdge->indexVertex1);
-											this->listIndexesWireframe->push_back(nextIndex);
+									this->indexesList->push_back(index0);
+									this->indexesList->push_back(index1);
+								}
+								else
+								{
+									this->indexesList->push_back(index1);
+									this->indexesList->push_back(index0);
+								}
+								if (index0 != tempEdge1->indexVertex1 && index1 != tempEdge1->indexVertex1)
+									this->indexesList->push_back(tempEdge1->indexVertex1);
+								else
+									this->indexesList->push_back(tempEdge1->indexVertex2);
+							}
+						}
+					}
+				}
 
-											// Change the edge
-											Edge * temp = tempEdge;
-											tempEdge = tempEdge1;
-											tempEdge1 = temp;
-										}
+				// Creation of the specialize face
+				vec3 currentVertexNeighbour = this->verticesList->at(tempEdge->indexVertex1);
+				for (unsigned int k = 0; k < listNewEdges.size(); ++k)
+				{
+					Edge * tempEdge1 = listNewEdges[k];
+					if (tempEdge1->indexVertex2 == nextIndex)
+					{
+						vec3 nextVertexNeighbour = this->verticesList->at(tempEdge1->indexVertex1);
+						for (unsigned int l = 0; l < this->listEdges->size(); ++l)
+						{
+							Edge * tempEdge2 = this->listEdges->at(l);
+							if ((tempEdge2->indexVertex1 == tempEdge->indexVertex1 && tempEdge2->indexVertex2 == tempEdge1->indexVertex1) ||
+								(tempEdge2->indexVertex2 == tempEdge->indexVertex1 && tempEdge2->indexVertex1 == tempEdge1->indexVertex1))
+							{
+								// Create the new Edge
+								float size1 = (currentVertex - nextVertexNeighbour).Length();
+								float size2 = (currentVertexNeighbour - nextVertex).Length();
+								Edge * edge;
+								if(size1 < size2)
+								{
+									edge = new Edge(currentIndex, tempEdge1->indexVertex1);
+									this->listEdges->push_back(edge);
+									this->listIndexesWireframe->push_back(currentIndex);
+									this->listIndexesWireframe->push_back(tempEdge1->indexVertex1);
+								}
+								else
+								{
+									edge = new Edge(tempEdge->indexVertex1, nextIndex);
+									this->listEdges->push_back(edge);
+									this->listIndexesWireframe->push_back(tempEdge->indexVertex1);
+									this->listIndexesWireframe->push_back(nextIndex);
 
-										// Create the first face
-										Face * face1 = new Face(tempEdge, tempEdge2, edge);
-										face1->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-										this->listFaces->push_back(face1);
-								
-										// Add the indexes
-										unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
-										if (!face1->normalInverse)
-										{
-											this->indexesList->push_back(index0);
-											this->indexesList->push_back(index1);
-										}
-										else
-										{
-											this->indexesList->push_back(index1);
-											this->indexesList->push_back(index0);
-										}
-										if (index0 != tempEdge2->indexVertex1 && index1 != tempEdge2->indexVertex1)
-											this->indexesList->push_back(tempEdge2->indexVertex1);
-										else
-											this->indexesList->push_back(tempEdge2->indexVertex2);
-								
-										// Create the second face
-										Edge * tempEdge3 = NULL;
-										for (unsigned int m = 0; m < this->listEdges->size(); ++m)
-										{
-											tempEdge3 = this->listEdges->at(m);
-											if ((tempEdge3->indexVertex1 == tempEdge->indexVertex1 && tempEdge3->indexVertex2 == tempEdge1->indexVertex1) ||
-												(tempEdge3->indexVertex2 == tempEdge->indexVertex1 && tempEdge3->indexVertex1 == tempEdge1->indexVertex1))
-												break;
-										}
-										Face * face2 = new Face(tempEdge1, tempEdge3, edge);
-										face2->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
-										this->listFaces->push_back(face2);
-								
-										// Add the indexes
-										index0 = tempEdge1->indexVertex1;
-										index1 = tempEdge1->indexVertex2;
-										if (!face2->normalInverse)
-										{
-											this->indexesList->push_back(index0);
-											this->indexesList->push_back(index1);
-										}
-										else
-										{
-											this->indexesList->push_back(index1);
-											this->indexesList->push_back(index0);
-										}
-										if (index0 != tempEdge3->indexVertex1 && index1 != tempEdge3->indexVertex1)
-											this->indexesList->push_back(tempEdge3->indexVertex1);
-										else
-											this->indexesList->push_back(tempEdge3->indexVertex2);
+									// Change the edge
+									Edge * temp = tempEdge;
+									tempEdge = tempEdge1;
+									tempEdge1 = temp;
+								}
 
-										if(size1 >= size2)
-										{
-											// Revert the edge changement
-											Edge * temp = tempEdge;
-											tempEdge = tempEdge1;
-											tempEdge1 = temp;
-										}
-									}
+								// Create the first face
+								Face * face1 = new Face(tempEdge, tempEdge2, edge);
+								face1->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
+								this->listFaces->push_back(face1);
+
+								// Add the indexes
+								unsigned short index0 = tempEdge->indexVertex1, index1 = tempEdge->indexVertex2;
+								if (!face1->normalInverse)
+								{
+									this->indexesList->push_back(index0);
+									this->indexesList->push_back(index1);
+								}
+								else
+								{
+									this->indexesList->push_back(index1);
+									this->indexesList->push_back(index0);
+								}
+								if (index0 != tempEdge2->indexVertex1 && index1 != tempEdge2->indexVertex1)
+									this->indexesList->push_back(tempEdge2->indexVertex1);
+								else
+									this->indexesList->push_back(tempEdge2->indexVertex2);
+								
+								// Create the second face
+								Edge * tempEdge3 = NULL;
+								for (unsigned int m = 0; m < this->listEdges->size(); ++m)
+								{
+									tempEdge3 = this->listEdges->at(m);
+									if ((tempEdge3->indexVertex1 == currentIndex && tempEdge3->indexVertex2 == nextIndex) ||
+										(tempEdge3->indexVertex2 == currentIndex && tempEdge3->indexVertex1 == nextIndex))
+										break;
+								}
+								Face * face2 = new Face(tempEdge1, tempEdge3, edge);
+								face2->VerifyFace(this->verticesList, vec3(0.0f, 1.0f, 0.0f));
+								this->listFaces->push_back(face2);
+								
+								// Add the indexes
+								index0 = tempEdge1->indexVertex1;
+								index1 = tempEdge1->indexVertex2;
+								if (!face2->normalInverse)
+								{
+									this->indexesList->push_back(index0);
+									this->indexesList->push_back(index1);
+								}
+								else
+								{
+									this->indexesList->push_back(index1);
+									this->indexesList->push_back(index0);
+								}
+								if (index0 != tempEdge3->indexVertex1 && index1 != tempEdge3->indexVertex1)
+									this->indexesList->push_back(tempEdge3->indexVertex1);
+								else
+									this->indexesList->push_back(tempEdge3->indexVertex2);
+
+								if(size1 >= size2)
+								{
+									// Revert the edge changement
+									Edge * temp = tempEdge;
+									tempEdge = tempEdge1;
+									tempEdge1 = temp;
 								}
 							}
 						}

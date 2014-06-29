@@ -24,7 +24,7 @@ void main()
 {
 	gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_WorldMatrix * u_RotationMatrix * a_Position;
 	
-	if(u_Face==0)
+	if(u_Face == 0)
 		v_TexCoord = vec2(1.0 - (u_Scale/2.0 + a_Position.z) / (u_Scale), (u_Scale/2.0 + a_Position.y) / (u_Scale));
 	if(u_Face == 1)
 		v_TexCoord = vec2((u_Scale/2.0 + a_Position.x) / (u_Scale), (u_Scale/2.0 + a_Position.y) / (u_Scale));
