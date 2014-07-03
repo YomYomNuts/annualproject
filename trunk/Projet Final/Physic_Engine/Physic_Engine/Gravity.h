@@ -15,7 +15,8 @@ public:
 	void resetTime();
 	void setWeight(float weight);
 	void addForce(vec3 force, vec3* velocity, float elapsedTime);
-	vec3 getForce(float elapsedTime);
+	void applyForce(vec3* velocity, float elapsedTime);
+	vec3 getForce();
 	void setResistance(float mass, float resistance);
 	void setBounciness(float mass, float bounciness);
 	float getResistance();

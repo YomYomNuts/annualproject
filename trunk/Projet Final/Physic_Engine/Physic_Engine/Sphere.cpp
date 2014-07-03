@@ -665,13 +665,14 @@ void Sphere::changeLevelOfDetail(int levelOfDetail)
 	cout << "Nb triangles : " << pow(levelOfDetail,2) * 8 << endl;
 }
 
-void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
+void Sphere::render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform)
 {
 	
 	//// FRONT (UP) \\\\\
 
 	glVertexAttribPointer(*positionAttrib, 3, GL_FLOAT, false, 0, &this->frontTriangle.at(0).x);
 	glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
+	glUniform1f(*texture_uniform, this->useTexture);
 	glEnableVertexAttribArray(*positionAttrib);
 	glDrawElements(GL_TRIANGLE_STRIP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 
@@ -680,6 +681,7 @@ void Sphere::render(GLint *positionAttrib, GLint *colorUniform)
 		glEnable( GL_POLYGON_OFFSET_FILL );
 		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
+		glUniform1f(*texture_uniform, 0.0f);
 		glDrawElements(GL_LINE_LOOP, this->indices.size(),GL_UNSIGNED_SHORT,&this->indices.at(0));
 	}
 

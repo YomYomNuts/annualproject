@@ -293,14 +293,14 @@ void ObjectManager::defineGameObjectAround(float elapsedTime)
 	currentObject->getComponents()->getRigidBody()->calculateNormalsAndCenterOfGravities();
 }
 
-void ObjectManager::render(GLint *positionAttrib, GLint *colorUniform)
+void ObjectManager::render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform)
 {
 	unsigned int i;
 	
 	for(i = 0; i < this->listOfObject.size(); ++i)
 	{
 		if(this->listOfObject.at(i)->getRenderObject())
-			this->listOfObject.at(i)->render(positionAttrib, colorUniform);
+			this->listOfObject.at(i)->render(positionAttrib, colorUniform, texture_uniform);
 		if(this->listOfObject.at(i)->getComponents()->getRigidBody()->getDisplayRigidBody())
 			this->listOfObject.at(i)->getComponents()->getRigidBody()->renderRigidBody(positionAttrib, colorUniform);
 	}
@@ -864,6 +864,7 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 					{
 						bounciness = currentObject->getComponents()->getGravity()->getBounciness();
 						resistance = currentObject->getComponents()->getGravity()->getResistance();
+
 						//
 						//impactTotal = currentObject->getMass() * currentObject->getVelocity()->Length();
 
@@ -875,8 +876,9 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 
 
 						//currentObject->getComponents()->getGravity()->addForce(impactForce1/5 ,  currentObject->getVelocity(), elapsedTime);
-						currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, - currentObject->getVelocity()->y /bounciness/* * ((bounciness+resistance)*0.001)*/, currentObject->getVelocity()->z / resistance));
+						currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, -currentObject->getVelocity()->y / bounciness, currentObject->getVelocity()->z / resistance));
 						//currentObject->getComponents()->getGravity()->addForce(impactForce1 / ((resistance + bounciness) * 1), currentObject->getVelocity(), elapsedTime);
+						
 					}
 					else
 					{
@@ -885,8 +887,6 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 						
 						impactTotal = currentObject->getMass() * currentObject->getVelocity()->Length() +
 									currentObjectAround->getMass() * currentObjectAround->getVelocity()->Length();
-
-						
 
 						//ratio = this->listOfObject.at(i)->getMass() / (this->listOfObject.at(i)->getMass() + this->listOfObject.at(i)->getObjectsAround().at(j)->getMass());
 						ratio = currentObjectAround->getMass() / (currentObject->getMass() + currentObjectAround->getMass());
@@ -900,11 +900,9 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 						impactForce2.y = ratio * impactTotal * direction.y; 
 						impactForce2.z = ratio * impactTotal * direction.z;
 
-					
-
 						bounciness = currentObject->getComponents()->getGravity()->getBounciness();
 						resistance = currentObject->getComponents()->getGravity()->getResistance();
-								
+						
 						currentObject->getComponents()->getGravity()->addForce(impactForce1 / ((resistance + bounciness) * 1),  currentObject->getVelocity(), elapsedTime);
 
 						//if(currentObject->getComponents()

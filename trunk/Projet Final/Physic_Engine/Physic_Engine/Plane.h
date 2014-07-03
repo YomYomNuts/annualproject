@@ -12,7 +12,7 @@ class Plane:public GameObject
 public:
 	Plane(void);
 	Plane(vec3 upperRight, vec3 upperLeft, vec3 lowerRight,vec3 lowerLeft); 
-	void render(GLint *positionAttrib, GLint *colorUniform);
+	void render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform);
 	vector<vec3> getCoordinates();
 	void update(float elapsedTime);
 	void changePosition(float X, float Y, float Z);

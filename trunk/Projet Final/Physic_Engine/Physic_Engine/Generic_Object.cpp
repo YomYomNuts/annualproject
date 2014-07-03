@@ -85,12 +85,13 @@ void Generic_Object::setWireframeMode(bool active)
 	this->wireframeMode = active;
 }
 
-void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
+void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform)
 {
 	if(alternateFacesAndNormals)
 	{
 		glVertexAttribPointer(*positionAttrib, 3, GL_FLOAT, false, 0, &verticesList->at(0).x);
 		glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
+		glUniform1f(*texture_uniform, this->useTexture);
 		glDrawElements(GL_TRIANGLE_STRIP,this->indexesList->size(),GL_UNSIGNED_SHORT,&this->indexesList->at(0));
 
 		if(this->wireframeMode)
@@ -98,6 +99,7 @@ void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
 			glEnable( GL_POLYGON_OFFSET_FILL );
 			glPolygonOffset( 1.0, 1.0 );
 			glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
+			glUniform1f(*texture_uniform, 0.0f);
 			glDrawElements(GL_LINE_LOOP,this->indexesList->size(),GL_UNSIGNED_SHORT,&this->indexesList->at(0));
 		}
 	}
@@ -105,14 +107,15 @@ void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
 	{
 		glVertexAttribPointer(*positionAttrib, 3, GL_FLOAT, false, 0, &this->verticesList->at(0).x);
 		glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
+		glUniform1f(*texture_uniform, this->useTexture);
 		glDrawElements(GL_TRIANGLES, this->indexesList->size(), GL_UNSIGNED_SHORT, &this->indexesList->at(0));
-		glUniform4f(*colorUniform,  1.f, 0.f, 0.f, 1.f);
 
 		if(this->wireframeMode)
 		{
 			glEnable( GL_POLYGON_OFFSET_FILL );
 			glPolygonOffset( 1.0, 1.0 );
 			glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
+			glUniform1f(*texture_uniform, 0.0f);
 			glDrawElements(GL_LINES,this->listIndexesWireframe->size(),GL_UNSIGNED_SHORT,&this->listIndexesWireframe->at(0));
 		}
 		/*glDrawElements(GL_LINES, this->listIndexesWireframe->size(), GL_UNSIGNED_SHORT, &this->listIndexesWireframe->at(0));

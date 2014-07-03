@@ -15,7 +15,7 @@ public:
 	Sphere(void);
 	Sphere(float posX, float posY, float posZ);
 	Sphere(float posX, float posY, float posZ, float radius, int levelOfDetail);
-	void render(GLint *positionAttrib, GLint *colorUniform);
+	void render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform);
 	void update(float elapsedTime);
 	float getRadius();
 	void changePosition(float posX, float posY, float posZ);

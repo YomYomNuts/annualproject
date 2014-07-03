@@ -58,15 +58,14 @@ void Gravity::addForce(vec3 force, vec3* velocity, float elapsedTime)
 	this->force.y += force.y;
 	this->force.z += force.z;
 
-	
 	velocity->x += this->gravity * force.x * elapsedTime;
 	velocity->y += this->gravity * force.y * elapsedTime;
 	velocity->z += this->gravity * force.z * elapsedTime;
 }
 
-vec3 Gravity::getForce(float elapsedTime)
+vec3 Gravity::getForce()
 {
-	return this->force * elapsedTime;
+	return this->force;
 }
 
 float Gravity::getResistance()

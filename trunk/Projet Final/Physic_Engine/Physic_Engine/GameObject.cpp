@@ -8,6 +8,7 @@ GameObject::GameObject()
 	this->displayAxesBool = false;
 	this->centerOfObject = vec3(0.0f, 0.0f, 0.0f);
 	this->wireframeMode = false;
+	this->useTexture = 0.0f;
 	this->alternateFacesAndNormals = false;
 
 
@@ -39,6 +40,7 @@ GameObject::GameObject(float axeSize, bool alternateFacesAndNormals)
 	this->displayAxesBool = false;
 	this->centerOfObject = vec3(0.0f, 0.0f, 0.0f);
 	this->wireframeMode = false;
+	this->useTexture = 0.0f;
 
 	this->direction = vec3(0.0f, 0.0f, 0.0f);
 	this->velocity = vec3(0.0f, 0.0F,0.0f);
@@ -70,6 +72,11 @@ void GameObject::setColor(float r, float g, float b, float a)
 void GameObject::setWireframeMode(bool active)
 {
 	this->wireframeMode = active;
+}
+
+void GameObject::setUseTexture(bool use)
+{
+	this->useTexture = (use ? 1.0f : 0.0f);
 }
 
 void GameObject::setDisplayAxes(bool status)

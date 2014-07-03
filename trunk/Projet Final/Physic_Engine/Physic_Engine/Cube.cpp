@@ -135,10 +135,11 @@ void Cube::setWireframeMode(bool active)
 	this->wireframeMode = active;
 }
 
-void Cube::render(GLint *positionAttrib, GLint *colorUniform)
+void Cube::render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform)
 {
 	glVertexAttribPointer(*positionAttrib, 3, GL_FLOAT, false, 0, &quadPosition.at(0).x);
 	glUniform4f(*colorUniform,color.x, color.y, color.z, color.w);
+	glUniform1f(*texture_uniform, this->useTexture);
 	glEnableVertexAttribArray(*positionAttrib);
 	glDrawElements(GL_TRIANGLE_STRIP,this->indexes.size(),GL_UNSIGNED_SHORT,&this->indexes.at(0));
 
@@ -147,6 +148,7 @@ void Cube::render(GLint *positionAttrib, GLint *colorUniform)
 		glEnable( GL_POLYGON_OFFSET_FILL );
 		glPolygonOffset( 1.0, 1.0 );
 		glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
+		glUniform1f(*texture_uniform, 0.0f);
 		glDrawElements(GL_LINE_LOOP,this->indexes.size(),GL_UNSIGNED_SHORT,&this->indexes.at(0));
 	}
 	

@@ -18,6 +18,7 @@ public:
 	GameObject(float sizeAxe, bool alternateFacesAndNormals);
 	void setColor(float r, float g, float b, float a);
 	void setWireframeMode(bool status);
+	void setUseTexture(bool use);
 	void setDisplayAxes(bool status);
 	vec3 getCenterOfObject();
 	unsigned int getId();
@@ -42,7 +43,7 @@ public:
 
 	//VIRTUAL
 	void virtual update(float elapsedTime);
-	void virtual render(GLint *positionAttrib, GLint *colorUniform) = 0;
+	void virtual render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform) = 0;
 	void virtual changePosition(float X, float Y, float Z) = 0;
 	void virtual rotate(vec3 velocity, float elapsedTime) = 0;
 	void virtual clearLists() = 0;
@@ -56,6 +57,7 @@ protected:
 	vec4 color;
 	bool displayAxesBool;
 	bool wireframeMode;
+	float useTexture;
 	vec3 centerOfObject;
 	Components components;
 
