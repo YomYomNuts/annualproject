@@ -35,7 +35,8 @@ public:
 	std::vector<unsigned short> * RemoveVertexAround(vec3 positionImpact, float radius);
 	void TranslateAndLookAtAndScale(const vec3 & positionCenterRotation, const vec3 & positionLookAt, const vec3 & positionTranlate, float valueScale);
 	void calculateCenterOfObject();
-
+	void clearLists();
+	void deleteLists();
 	~Generic_Object(void);
 
 	vector<GLushort>* indexesList;
@@ -44,15 +45,11 @@ public:
 	vector<Edge*>* listEdges;
 	vector<Face*>* listFaces;
 
-	std::vector<unsigned short> * listIndexesWireframe;
-	std::vector<unsigned short> * listIndexesPoint;
+	vector<unsigned short> * listIndexesWireframe;
+	vector<unsigned short> * listIndexesPoint;
 
 private:
-	bool wireframeMode;
 	
-	vec4 color;
-	
-
 	float size;
 };
 

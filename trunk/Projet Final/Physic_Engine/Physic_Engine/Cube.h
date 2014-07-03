@@ -31,6 +31,8 @@ public:
 	vector<vec3>* getListOfVertices();
 	vector<GLushort>* getListOfIndexes();
 	vector<vec3>* getListIndexesFaces();
+	void clearLists();
+	void deleteLists();
 
 	/*void calculateNormalsAndCenterOfGravities();
 	vector<vec3>* getListOfNormals();

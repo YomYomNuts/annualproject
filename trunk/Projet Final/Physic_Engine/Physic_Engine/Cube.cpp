@@ -393,6 +393,16 @@ vector<GLushort>* Cube::getListOfIndexes()
 	return &this->indexes;
 }
 
+void Cube::clearLists()
+{
+	this->indexes.clear();
+	this->quadPosition.clear();
+}
+
+void Cube::deleteLists()
+{
+}
+
 Cube::~Cube(void)
 {
 }

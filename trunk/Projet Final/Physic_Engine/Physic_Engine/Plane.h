@@ -19,6 +19,8 @@ public:
 	void rotate(vec3 velocity, float elapsedTime);
 	vector<vec3>* getListOfVertices();
 	vector<GLushort>* getListOfIndexes();
+	void clearLists();
+	void deleteLists();
 	~Plane(void);
 
 	

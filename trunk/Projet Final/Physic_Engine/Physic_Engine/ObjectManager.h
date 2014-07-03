@@ -21,7 +21,8 @@ public:
 	void render(GLint *positionAttrib, GLint *colorUniform);
 	void setGravity(float gravity);
 	GameObject* getGameObjectById(int id);
-	
+	void clearListOfObject();
+	void setWireframeMode(bool wireframe);
 	~ObjectManager(void);
 
 private:

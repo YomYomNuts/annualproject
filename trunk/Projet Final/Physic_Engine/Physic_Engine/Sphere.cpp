@@ -806,6 +806,23 @@ vector<GLushort>* Sphere::getListOfIndexes()
 	return &this->indices;
 }
 
+void Sphere::clearLists()
+{
+	this->frontTriangle.clear();
+	this->leftTriangle.clear();
+	this->rearTriangle.clear();
+	this->rightTriangle.clear();
+	this->frontTriangleBottom.clear();
+	this->leftTriangleBottom.clear();
+	this->rearTriangleBottom.clear();
+	this->rightTriangleBottom.clear();
+	this->indices.clear();
+}
+
+void Sphere::deleteLists()
+{
+}
+
 Sphere::~Sphere(void)
 {
 }
