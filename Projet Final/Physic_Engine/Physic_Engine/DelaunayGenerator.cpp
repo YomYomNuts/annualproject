@@ -59,7 +59,6 @@ std::vector<unsigned short>* DelaunayGenerator::LaunchCircleGeneration(float rad
 		}
 	}
 	Face::VerifyFaces(listVertex, listFaces, vec3(0,0,1));
-	printf("nb vertex %d\nnb edges %d\nnb faces %d\n", listVertex->size(), listEdges->size(), listFaces->size());
 	
 	std::vector<unsigned short> * listIndexConvexPolygon = new std::vector<unsigned short>();
 	while (listVerticesConvexPolygon->size() > 0)

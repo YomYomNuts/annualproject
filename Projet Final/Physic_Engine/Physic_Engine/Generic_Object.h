@@ -20,7 +20,7 @@ public:
 	void setWireframeMode(bool active);
 	float getSize();
 	void update(float elapsedTime);
-	void render(GLint *positionAttrib, GLint *colorUniform);
+	void render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform);
 	void changePosition(float X, float Y, float Z);
 	void rotate(vec3 velocity, float elapsedTime);
 	void calculateNormalsAndCenterOfGravities();

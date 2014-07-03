@@ -18,7 +18,7 @@ public:
 	int getNumberOfObject();
 	void addObject(GameObject* object);
 	void update(float elapsedTime);
-	void render(GLint *positionAttrib, GLint *colorUniform);
+	void render(GLint *positionAttrib, GLint *colorUniform, GLint *texture_uniform);
 	void setGravity(float gravity);
 	GameObject* getGameObjectById(int id);
 	void clearListOfObject();

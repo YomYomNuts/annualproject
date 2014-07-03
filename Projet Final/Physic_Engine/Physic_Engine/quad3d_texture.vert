@@ -3,22 +3,15 @@
 attribute vec4 a_Position;
 
 uniform vec4 u_Color;
-
 uniform mat4 u_ProjectionMatrix;
+uniform mat4 u_WorldMatrix;
+uniform mat4 u_ViewMatrix;
+uniform mat4 u_RotationMatrix;
+uniform float u_Scale;
+uniform int u_Face;
 
 varying vec4 v_VertexColor;
-
-uniform mat4 u_WorldMatrix;
-
 varying vec2 v_TexCoord;
-
-uniform mat4 u_ViewMatrix;
-
-uniform mat4 u_RotationMatrix;
-
-uniform float u_Scale;
-
-uniform int u_Face;
 
 void main()
 {

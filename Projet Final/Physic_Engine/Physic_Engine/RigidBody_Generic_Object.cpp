@@ -56,10 +56,6 @@ RigidBody_Generic_Object::RigidBody_Generic_Object(vector<vec3> verticesList, ve
 	this->axeZ.push_back(centerOfObject);
 	this->axeZ.push_back(vec3(centerOfObject.x, centerOfObject.y, centerOfObject.z  + size * 1.3f));
 	this->isStatic = false;
-
-	//this->listIndexesWireframe;
-
-	//changePosition(posX, posY, posZ);
 }
 
 void RigidBody_Generic_Object::changePosition(float posX, float posY, float posZ)

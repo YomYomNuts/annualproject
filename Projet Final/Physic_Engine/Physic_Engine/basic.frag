@@ -1,31 +1,15 @@
-/*
-#ifdef GL_ES
-varying lowp vec4 v_VertexColor;
-#else
+
+uniform sampler2D u_Texture1;
+uniform sampler2D u_Texture2;
+
 varying vec4 v_VertexColor;
-#endif
+varying vec2 v_TexCoord;
+varying float v_TextureUse;
 
 void main()
 {
-	gl_FragColor = v_VertexColor;
-}*/
-
-
-
-/*#ifdef GL_ES
-varying lowp vec4 v_VertexColor;
-#else
-varying vec4 v_VertexColor;
-#endif*/
-
-
-varying vec4 v_VertexColor;
-//uniform sampler2D u_Texture;
-
-//varying vec2 v_TexCoord;
-
-void main()
-{
-	//gl_FragColor = v_VertexColor + texture2D(u_Texture, v_TexCoord);
-	gl_FragColor = v_VertexColor;
+	if (v_TextureUse == 0.0)
+		gl_FragColor = v_VertexColor * texture2D(u_Texture2, v_TexCoord);
+	if (v_TextureUse != 0.0)
+		gl_FragColor = v_VertexColor * mix(texture2D(u_Texture1, v_TexCoord), texture2D(u_Texture2, v_TexCoord), v_TextureUse - 1.0);
 }
