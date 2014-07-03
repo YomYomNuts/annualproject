@@ -20,17 +20,24 @@
 #include <cmath>
 #include "Common/EsgiTimer.h"
 
-#define WINDOW_WIDTH 1000
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
 using namespace std;
 
 int GameObject::count = 0;
 
+bool clearScene;
+bool wireframeMode;
+bool wireframeRigidBodyMode;
+
+int nbObjects = 0;
+
 float radiusExplosionCircle = 45.0f;
 float depthExplosion = 40.0f;
 int nbPointsCircle = 60;
 int nbParticlesVoronoi = 5;
+float blastPower = 1;
 
 EsgiShader shader;
 EsgiShader shaderSkybox;
@@ -64,9 +71,15 @@ void Draw();
 void Clean();
 bool Setup();
 void Keyboard(unsigned char key, int mx, int my);
+void generateGround();
+Generic_Object* CreateFragments(vec3 position, float size);
+void makeExplosion();
 
 int main(int argc, char *argv[])
 {
+	wireframeMode = true;
+	wireframeRigidBodyMode = false;
+
 	EsgiGLApplication esgi;
     
 	esgi.InitWindowPosition(0, 0);
@@ -86,8 +99,17 @@ int main(int argc, char *argv[])
 void Update(float elapsedTime)
 {
 	objectManager.update(elapsedTime);
+
+	if(clearScene)
+	{
+		clearScene = false;
+		objectManager.clearListOfObject();
+		ground = new Generic_Object();
+		generateGround();
+		nbObjects = 0;
+	}
 	
-	printf("%.0f fps\n", 1/elapsedTime);
+	printf("%.0f fps - %i objects in the scene\n", 1/elapsedTime, nbObjects);
 
 }
 
@@ -212,72 +234,11 @@ bool Setup()
 	shaderSkybox.LoadFragmentShader("basic_texture.frag");
 	shaderSkybox.Create();
 
-	camera.position = vec3(0.f, 100.f, 80.f); //vec3(3.f, 10.f, 20.f);vec3(0.0f, 3.f, 4.f); (3.f, 10.f, 70.f); (3.f, 20.f, 100.f)
+	camera.position = vec3(0.f, 300.f, 150.f); //vec3(3.f, 10.f, 20.f);vec3(0.0f, 3.f, 4.f); (3.f, 10.f, 70.f); (3.f, 20.f, 100.f)
 	camera.orientation = vec3(0.f, 0.f, 0.f);
 	camera.target = vec3(0.f, 0.f, 0.f);
 
-	int numberSudivisionX = 4;
-	int numberSudivisionZ = 4;
-
-
-	vec3 minimalSize(-scale, 0.f, -scale);
-	vec3 maximalSize(scale, 0.f, scale);
-
-	float sizeElementX = (maximalSize.x - minimalSize.x) / numberSudivisionX;
-	float sizeElementZ = (maximalSize.z - minimalSize.z) / numberSudivisionZ;
-	
-	for (int i = 0; i < 1 + numberSudivisionX; ++i)
-	{
-		for (int j = 0; j < 1 + numberSudivisionZ; ++j)
-		{
-			ground->verticesList->push_back(vec3(minimalSize.x + sizeElementX * i, 0.f, minimalSize.z + sizeElementZ * j));
-		}
-	}
-
-	Edge * edge1, * edge2, * edge3;
-	for (int i = 0; i < numberSudivisionX; ++i)
-	{
-		edge1 = new Edge(i * (1 + numberSudivisionZ), (i + 1) * (1 + numberSudivisionZ));
-		ground->listEdges->push_back(edge1);
-		for (int j = 0; j < numberSudivisionZ; ++j)
-		{
-			edge2 = new Edge((i + 1) * (1 + numberSudivisionZ) + j, (i + 1) * (1 + numberSudivisionZ) + j + 1);
-			ground->listEdges->push_back(edge2);
-			edge3 = new Edge((i + 1) * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j);
-			ground->listEdges->push_back(edge3);
-			ground->listFaces->push_back(new Face(edge1, edge2, edge3));
-			edge1 = new Edge((i + 1) * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j + 1);
-			ground->listEdges->push_back(edge1);
-			switch(i)
-			{
-			case 0:
-				edge2 = new Edge(i * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j);
-				ground->listEdges->push_back(edge2);
-				break;
-			case 1:
-				edge2 = ground->listEdges->at(j + ((i - 1) * 3 * numberSudivisionZ + i) + j * 3);
-				break;
-			default:
-				edge2 = ground->listEdges->at(numberSudivisionZ + ((i - 1) * 3 * numberSudivisionZ + i) + j * 3);
-				break;
-			}
-			ground->listFaces->push_back(new Face(edge1, edge2, edge3));
-		}
-	}
-
-	Face::VerifyFaces(ground->verticesList, ground->listFaces, vec3(0.0f, 1.0f, 0.0f));
-	ground->CalculateIndexes();
-	objectManager.addObject(ground);
-
-	ground->setWireframeMode(false);
-	ground->setRenderObject(true);
-	ground->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *ground->verticesList, *ground->indexesList, vec3(0.0f, 0.0f, 0.0f),false);
-	ground->getComponents()->getRigidBody()->setIsStatic(true);
-	ground->getComponents()->getRigidBody()->setSize(2000.0f);
-	ground->getComponents()->getRigidBody()->setDisplayRigidBody(false);
-	ground->getComponents()->getRigidBody()->activateRigidBody(true);
-	ground->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*ground->listIndexesWireframe);
-	ground->setColor(0.84f, 0.79f, 0.69f,1.0f);
+	generateGround();
 	
 	EsgiTexture * textureLeft = esgiReadTGAFile("img/skybox_left.tga");
 	EsgiTexture * textureFront = esgiReadTGAFile("img/skybox_front.tga");
@@ -339,6 +300,72 @@ bool Setup()
 	return true;
 }
 
+void generateGround()
+{
+	int numberSudivisionX = 4;
+	int numberSudivisionZ = 4;
+
+
+	vec3 minimalSize(-scale, 0.f, -scale);
+	vec3 maximalSize(scale, 0.f, scale);
+
+	float sizeElementX = (maximalSize.x - minimalSize.x) / numberSudivisionX;
+	float sizeElementZ = (maximalSize.z - minimalSize.z) / numberSudivisionZ;
+	
+	for (int i = 0; i < 1 + numberSudivisionX; ++i)
+	{
+		for (int j = 0; j < 1 + numberSudivisionZ; ++j)
+		{
+			ground->verticesList->push_back(vec3(minimalSize.x + sizeElementX * i, 0.f, minimalSize.z + sizeElementZ * j));
+		}
+	}
+
+	Edge * edge1, * edge2, * edge3;
+	for (int i = 0; i < numberSudivisionX; ++i)
+	{
+		edge1 = new Edge(i * (1 + numberSudivisionZ), (i + 1) * (1 + numberSudivisionZ));
+		ground->listEdges->push_back(edge1);
+		for (int j = 0; j < numberSudivisionZ; ++j)
+		{
+			edge2 = new Edge((i + 1) * (1 + numberSudivisionZ) + j, (i + 1) * (1 + numberSudivisionZ) + j + 1);
+			ground->listEdges->push_back(edge2);
+			edge3 = new Edge((i + 1) * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j);
+			ground->listEdges->push_back(edge3);
+			ground->listFaces->push_back(new Face(edge1, edge2, edge3));
+			edge1 = new Edge((i + 1) * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j + 1);
+			ground->listEdges->push_back(edge1);
+			switch(i)
+			{
+			case 0:
+				edge2 = new Edge(i * (1 + numberSudivisionZ) + j + 1, i * (1 + numberSudivisionZ) + j);
+				ground->listEdges->push_back(edge2);
+				break;
+			case 1:
+				edge2 = ground->listEdges->at(j + ((i - 1) * 3 * numberSudivisionZ + i) + j * 3);
+				break;
+			default:
+				edge2 = ground->listEdges->at(numberSudivisionZ + ((i - 1) * 3 * numberSudivisionZ + i) + j * 3);
+				break;
+			}
+			ground->listFaces->push_back(new Face(edge1, edge2, edge3));
+		}
+	}
+
+	Face::VerifyFaces(ground->verticesList, ground->listFaces, vec3(0.0f, 1.0f, 0.0f));
+	ground->CalculateIndexes();
+	objectManager.addObject(ground);
+
+	ground->setWireframeMode(wireframeMode);
+	ground->setRenderObject(true);
+	ground->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *ground->verticesList, *ground->indexesList, vec3(0.0f, 0.0f, 0.0f),false);
+	ground->getComponents()->getRigidBody()->setIsStatic(true);
+	ground->getComponents()->getRigidBody()->setSize(2000.0f);
+	ground->getComponents()->getRigidBody()->setDisplayRigidBody(wireframeRigidBodyMode);
+	ground->getComponents()->getRigidBody()->activateRigidBody(true);
+	ground->getComponents()->getRigidBody()->getRigidBodyObjectGeneric()->resetWireframeModeindexes(*ground->listIndexesWireframe);
+	ground->setColor(0.84f, 0.79f, 0.69f,1.0f);
+}
+
 Generic_Object* CreateFragments(vec3 position, float size)
 {
 	vector<vec3>* vertices = new vector<vec3>();
@@ -352,8 +379,8 @@ Generic_Object* CreateFragments(vec3 position, float size)
 	float z; 
 	float y;
 
-	LO = -3.0f;
-	HI = 3.0f;
+	LO = -1.0f;
+	HI = 1.0f;
 
 	x = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 	y = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
@@ -484,6 +511,8 @@ void makeExplosion()
 					
 				frag = CreateFragments(vec3((float)k * 10.0f-10.f, (float)i * 10.0f - (depthExplosion/3), (float)j * 10.0f-10.0f), 6.0f);
 
+				++nbObjects;
+
 				LO = 0.0f;
 				HI = 1.0f;
 
@@ -492,12 +521,12 @@ void makeExplosion()
 
 				b = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 
-				frag->setWireframeMode(false);
+				frag->setWireframeMode(wireframeMode);
 				frag->getComponents()->getGravity()->setUseGravity(true);
 				frag->getComponents()->getRigidBody()->addRigidBody(RIGID_GENERIC, *frag->getListOfVertices(), *frag->getListOfIndexes(), frag->getCenterOfObject(), true);
-				frag->getComponents()->getRigidBody()->setDisplayRigidBody(false);
+				frag->getComponents()->getRigidBody()->setDisplayRigidBody(wireframeRigidBodyMode);
 				frag->getComponents()->getRigidBody()->activateRigidBody(true);
-				frag->getComponents()->getGravity()->setBounciness(frag->getMass(), frag->getMass()/5550);
+				frag->getComponents()->getGravity()->setBounciness(frag->getMass(), frag->getMass()/550);
 				frag->getComponents()->getGravity()->setResistance(frag->getMass(), frag->getMass() / 1.01f);
 				frag->setAlternateFacesAndNormals(true);
 				frag->getComponents()->getGravity()->setGravity(9.8f);
@@ -529,7 +558,7 @@ void makeExplosion()
 
 				z = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 
-				frag->getComponents()->getGravity()->addForce(vec3(dirX * -x, dirY* - y, dirZ *-z), frag->getVelocity(), 1.0);
+				frag->getComponents()->getGravity()->addForce(vec3(dirX * -x, dirY* - (blastPower*y), dirZ *-z), frag->getVelocity(), 1.0);
 
 				++dirX;
 				dirX =(dirX ==0?1:dirX);
@@ -566,6 +595,20 @@ void Keyboard(unsigned char key, int mx, int my)
 
 	switch(key)
 	{
+	case 'e':
+		camera.position.z -= step;
+		break;
+	case 'd':
+		camera.position.z += step;
+		break;
+	case 'w':
+		clearScene = true;
+		break;
+	case 'x':
+		wireframeMode = (wireframeMode?false:true);
+
+		objectManager.setWireframeMode(wireframeMode);
+		break;
 	case 'a':
 		camera.position.y += step;
 		break;
@@ -595,6 +638,8 @@ void Keyboard(unsigned char key, int mx, int my)
 				for(int k =0; k < 4; ++k)
 				{
 					frag = CreateFragments(vec3((float)k * 10.0f-10.f, (float)i * 10.0f + 5.0f + 20.0f, (float)j * 10.0f-10.0f), 10.0f);
+
+					++nbObjects;
 
 					//cout << ++countSphere << " - x: " << k* 5.0f << "   y: " << i* 5.0f + 5.0f<< "   z: " << j* 5.0f << endl;
 

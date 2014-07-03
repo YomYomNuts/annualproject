@@ -21,6 +21,8 @@ public:
 	void changePosition(float posX, float posY, float posZ);
 	void rotate(vec3 velocity, float elapsedTime);
 	vector<GLushort>* getListOfIndexes();
+	void clearLists();
+	void deleteLists();
 	~Sphere(void);
 	
 private:

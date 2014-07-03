@@ -45,6 +45,8 @@ public:
 	void virtual render(GLint *positionAttrib, GLint *colorUniform) = 0;
 	void virtual changePosition(float X, float Y, float Z) = 0;
 	void virtual rotate(vec3 velocity, float elapsedTime) = 0;
+	void virtual clearLists() = 0;
+	void virtual deleteLists() = 0;
 	
 	~GameObject(void);
 	

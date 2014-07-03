@@ -206,8 +206,8 @@ vec4 ObjectManager::isSegmentInsideObject(RigidBody* otherObjectRigidBody, vec3 
 			// Check if the segment is parallel to the face
 			dotProduct = MF.dotProduct(direction, otherObjectRigidBody->getListOfNormals()->at(i));
 
-			if(dotProduct != 0.0f)
-			{
+			//if(dotProduct != 0.0f)
+			//{
 				// Get the distance of the point of intersection between the pointA and the current face
 				distance = (MF.dotProduct(otherObjectRigidBody->getListOfNormals()->at(i), otherObjectRigidBody->getListOfCenterOfGravities()->at(i) - (pointA - (*velocityOfCurrentObject * elapsedTime))))/dotProduct;
 					
@@ -236,7 +236,7 @@ vec4 ObjectManager::isSegmentInsideObject(RigidBody* otherObjectRigidBody, vec3 
 				{
 					return vec4(1.0f, posIntersection.x, posIntersection.y, posIntersection.z);
 				}
-			}
+			//}
 		//}
 	}
 
@@ -851,32 +851,42 @@ void ObjectManager::updateCollisionWithGeneric(GameObject* currentObject, float 
 					float bounciness;
 					int id = currentObject->getId();
 
-					
-
+					vec3 impactForce1 = vec3(0.0f, 0.0f, 0.0f);
+					float impactTotal;
 					vec3 direction;
-
-					direction = currentObject->getCenterOfObject() - currentObjectAround->getCenterOfObject();
+					float ratio = 0.0f;
+					//direction = currentObject->getCenterOfObject() - currentObjectAround->getCenterOfObject();
 					//direction = impactPoint - currentObjectAround->getCenterOfObject();
+					direction = currentObject->getCenterOfObject() - impactPoint;
 					direction.Normalize();
 					
 					if(otherObjectRigidBodyGeneric->getIsStatic())
 					{
 						bounciness = currentObject->getComponents()->getGravity()->getBounciness();
 						resistance = currentObject->getComponents()->getGravity()->getResistance();
-								
+						//
+						//impactTotal = currentObject->getMass() * currentObject->getVelocity()->Length();
+
+						//ratio = currentObject->getMass() / (10);
+						////ratio = currentObject->getMass();
+						//impactForce1.x = ratio * impactTotal * -direction.x;
+						//impactForce1.y = ratio * impactTotal * -direction.y; 
+						//impactForce1.z = ratio * impactTotal * -direction.z;
+
+
 						//currentObject->getComponents()->getGravity()->addForce(impactForce1/5 ,  currentObject->getVelocity(), elapsedTime);
-						currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, - currentObject->getVelocity()->y /bounciness /* * ((bounciness+resistance)*0.001)*/, currentObject->getVelocity()->z / resistance));
+						currentObject->setVelocity(vec3(currentObject->getVelocity()->x / resistance, - currentObject->getVelocity()->y /bounciness/* * ((bounciness+resistance)*0.001)*/, currentObject->getVelocity()->z / resistance));
+						//currentObject->getComponents()->getGravity()->addForce(impactForce1 / ((resistance + bounciness) * 1), currentObject->getVelocity(), elapsedTime);
 					}
 					else
 					{
 
-						vec3 impactForce1 = vec3(0.0f, 0.0f, 0.0f);
 						vec3 impactForce2 = vec3(0.0f, 0.0f, 0.0f);
-						float impactTotal;
+						
 						impactTotal = currentObject->getMass() * currentObject->getVelocity()->Length() +
 									currentObjectAround->getMass() * currentObjectAround->getVelocity()->Length();
 
-						float ratio = 0.0f;
+						
 
 						//ratio = this->listOfObject.at(i)->getMass() / (this->listOfObject.at(i)->getMass() + this->listOfObject.at(i)->getObjectsAround().at(j)->getMass());
 						ratio = currentObjectAround->getMass() / (currentObject->getMass() + currentObjectAround->getMass());
@@ -1043,6 +1053,23 @@ GameObject* ObjectManager::getGameObjectById(int id)
 	}
 
 	return NULL;
+}
+
+void ObjectManager::clearListOfObject()
+{
+	for(int i = 0; i < this->listOfObject.size(); ++i)
+	{
+		this->listOfObject.at(i)->deleteLists();
+		delete this->listOfObject.at(i);
+	}
+
+	this->listOfObject.clear();
+}
+
+void ObjectManager::setWireframeMode(bool wireframe)
+{
+	for(int i = 0; i < this->listOfObject.size(); ++i)
+		this->listOfObject.at(i)->setWireframeMode(wireframe);
 }
 
 ObjectManager::~ObjectManager(void)

@@ -87,6 +87,16 @@ vector<GLushort>* Plane::getListOfIndexes()
 {
 	return &this->indices;
 }
+void Plane::clearLists()
+{
+	this->verticesList.clear();
+	this->indices.clear();
+}
+
+void Plane::deleteLists()
+{
+}
+
 
 Plane::~Plane(void)
 {

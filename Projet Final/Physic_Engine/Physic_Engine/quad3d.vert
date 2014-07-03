@@ -22,7 +22,7 @@ void main()
 	
 	v_VertexColor = u_Color;
 
-	if( a_Position.y < -15.0)
+	if( a_Position.y < -5.0)
 	{
 		v_VertexColor.x = v_VertexColor.x - (u_DepthHall /v_VertexColor.x / 256.0 / 0.61);
 		v_VertexColor.y = v_VertexColor.y - (u_DepthHall /v_VertexColor.y / 256.0 / 0.44);

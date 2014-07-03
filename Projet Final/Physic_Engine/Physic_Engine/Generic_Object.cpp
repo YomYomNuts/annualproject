@@ -25,6 +25,12 @@ Generic_Object::Generic_Object(vector<vec3> &verticesList, vector<GLushort> &ind
 	this->verticesList = &verticesList;
 	this->indexesList = &indexesList;
 
+	this->listEdges = new vector<Edge*>();
+	this->listFaces = new vector<Face*>();
+
+	this->listIndexesWireframe = new vector<unsigned short>();
+	this->listIndexesPoint = new vector<unsigned short>();
+
 	this->wireframeMode = false;
 
 	this->color = vec4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -89,6 +95,8 @@ void Generic_Object::render(GLint *positionAttrib, GLint *colorUniform)
 
 		if(this->wireframeMode)
 		{
+			glEnable( GL_POLYGON_OFFSET_FILL );
+			glPolygonOffset( 1.0, 1.0 );
 			glUniform4f(*colorUniform,0.f, 0.f, 0.f, 1.0f);
 			glDrawElements(GL_LINE_LOOP,this->indexesList->size(),GL_UNSIGNED_SHORT,&this->indexesList->at(0));
 		}
@@ -727,6 +735,43 @@ void Generic_Object::calculateCenterOfObject()
 	this->mass = MF.getVolumeOfACube(size);
 }
 
+void Generic_Object::clearLists()
+{
+	this->indexesList->clear();
+	this->verticesList->clear();
+	this->listIndexesWireframe->clear();
+	this->listIndexesPoint->clear();
+
+	for(int i = 0; i < this->listEdges->size(); ++i)
+		delete this->listEdges->at(i);
+
+	this->listEdges->clear();
+
+	for(int i = 0; i < this->listFaces->size(); ++i)
+		delete this->listFaces->at(i);
+
+	this->listFaces->clear();
+}
+
+void Generic_Object::deleteLists()
+{
+	this->indexesList->clear();
+	this->verticesList->clear();
+	this->listIndexesWireframe->clear();
+	this->listIndexesPoint->clear();
+
+	for(int i = 0; i < this->listEdges->size(); ++i)
+		delete this->listEdges->at(i);
+
+	delete this->listEdges;
+
+	for(int i = 0; i < this->listFaces->size(); ++i)
+		delete this->listFaces->at(i);
+
+	delete this->listFaces;
+}
+
 Generic_Object::~Generic_Object(void)
 {
+	deleteLists();
 }
