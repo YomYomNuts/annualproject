@@ -77,6 +77,7 @@ void makeExplosion();
 
 int main(int argc, char *argv[])
 {
+
 	wireframeMode = true;
 	wireframeRigidBodyMode = false;
 
@@ -108,13 +109,14 @@ void Update(float elapsedTime)
 		generateGround();
 		nbObjects = 0;
 	}
-	
-	printf("%.0f fps - %i objects in the scene\n", 1/elapsedTime, nbObjects);
+	//printf("%.0f fps - %i objects in the scene\n", 1/elapsedTime, nbObjects);
 
+	
 }
 
 void Draw()
 {
+	
 	glClearColor(1.f, 1.f, 1.f, 1.f);
 	glClearDepth(1.f);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -131,7 +133,6 @@ void Draw()
 	modelviewMatrix.Identity();
 	worldMatrix.Identity();
 	modelviewMatrix = esgiMultiplyMatrix(viewMatrix, worldMatrix);
-	
 
 	esgiUtilsDrawAxes(modelviewMatrix,projectionMatrix,1.f);
 
@@ -166,7 +167,7 @@ void Draw()
 
 	glDisableVertexAttribArray(position_attrib);
 
-
+	
 	//---------------= SKYBOX =--------------//
 	programObject = shaderSkybox.GetProgram();
 	glUseProgram(programObject);
@@ -215,7 +216,7 @@ void Draw()
 
 	glDisableVertexAttribArray(position_attrib);
 
-
+	
 }
 
 void Clean()
