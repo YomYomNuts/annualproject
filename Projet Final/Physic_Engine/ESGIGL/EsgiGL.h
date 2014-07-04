@@ -90,6 +90,7 @@ void ESGI_PRINTSCREEN(int x, int y, const char *format, ...);
 
 void esgiKeyboardFunc(unsigned char key, int mx, int my);
 void esgiKeyboardSpecialFunc(int key, int mx, int my);
+void esgiKeyboardRepeatFunc(unsigned char key, int mx, int my);
 void esgiMouseFunc(int button, int state, int mx, int my);
 void esgiMotionFunc(int mx, int my);
 void esgiPassiveMotionFunc(int mx, int my);
@@ -131,6 +132,7 @@ public:
 	void DebugDisplayFunc(void (*drawFunc)())					{ m_DebugDrawFunc = drawFunc; }
 	void IdleFunc(void (*updateFunc)(float))					{ m_UpdateFunc = updateFunc; }
 	void KeyboardFunction(void (*keyFunc)(unsigned char, int , int ))		{ m_KeyFunc = keyFunc; }
+	void KeyboardRepeatFunction(void (*keyFunc)(unsigned char, int , int ))		{ m_KeyRepeatFunc = keyFunc; }
 	void MouseFunc(void (*mouseFunc)(int , int , int , int ))	{ m_MouseFunc = mouseFunc; }
 	void MotionFunc(void (*motionFunc)(int , int ))	{ m_MotionFunc = motionFunc; }
 	void PassiveMotionFunc(void (*motionFunc)(int , int ))	{ m_PassiveMotionFunc = motionFunc; }
@@ -153,6 +155,7 @@ public:
 
 	void HandleKeyboard(unsigned char key, int mousex, int mousey);
 	void HandleKeyboard(int key, int mousex, int mousey);
+	void HandleKeyboardRepeat(unsigned char key, int mousex, int mousey);
 	void HandleMouse(int button, int state, int mousex, int mousey);
 	void HandleMouse(bool clic, int mousex, int mousey);
 	
@@ -183,6 +186,7 @@ protected:
 	void (*m_UpdateFunc)( float deltaTime );
 	void (*m_KeyFunc)( unsigned char key, int mx, int my );
 	void (*m_KeySpecialFunc)( unsigned int key, int mx, int my );
+	void (*m_KeyRepeatFunc)( unsigned char key, int mx, int my );
 	void (*m_MouseFunc)( int button, int state, int mx, int my );
 	void (*m_MotionFunc)( int mx, int my );
 	void (*m_PassiveMotionFunc)( int mx, int my );

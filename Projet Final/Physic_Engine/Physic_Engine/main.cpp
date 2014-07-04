@@ -74,11 +74,12 @@ void Draw();
 void Clean();
 bool Setup();
 void Keyboard(unsigned char key, int mx, int my);
+void KeyboardRepeat(unsigned char key, int mx, int my);
 void Mouse(int button, int state, int mx, int my);
 void Motion(int mx, int my);
 void generateGround();
 Generic_Object* CreateFragments(vec3 position, float size);
-void makeExplosion();
+void makeExplosion(vec3 positionImpact);
 
 int main(int argc, char *argv[])
 {
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
     esgi.InitFunc(&Setup);
     esgi.CleanFunc(&Clean);
 	esgi.KeyboardFunction(&Keyboard);
+	esgi.KeyboardRepeatFunction(&KeyboardRepeat);
 	esgi.MouseFunc(&Mouse);
 	esgi.MotionFunc(&Motion);
 
@@ -305,8 +307,8 @@ void generateGround()
 	int numberSudivisionZ = 4;
 
 
-	vec3 minimalSize(-scale, 0.f, -scale);
-	vec3 maximalSize(scale, 0.f, scale);
+	vec3 minimalSize(-skyboxSize, 0.f, -skyboxSize);
+	vec3 maximalSize(skyboxSize, 0.f, skyboxSize);
 
 	float sizeElementX = (maximalSize.x - minimalSize.x) / numberSudivisionX;
 	float sizeElementZ = (maximalSize.z - minimalSize.z) / numberSudivisionZ;
@@ -466,7 +468,7 @@ Generic_Object* CreateFragments(vec3 position, float size)
 	return new Generic_Object(*vertices, *indexes, position.x, position.y, position.z, true);
 }
 
-void makeExplosion()
+void makeExplosion(vec3 positionImpact)
 {
 	float LO;
 	float HI;
@@ -486,7 +488,7 @@ void makeExplosion()
 
 	camera.position = vec3(0.f, 30.f, 1.0f);
 
-	DestructorManager::LaunchDestruction(objectManager, ground, vec3(0.0f, 0.0f, 0.0f), -camera.position, radiusExplosionCircle, depthExplosion, nbPointsCircle, nbPointsCircle);
+	DestructorManager::LaunchDestruction(objectManager, ground, positionImpact, -camera.position, radiusExplosionCircle, depthExplosion, nbPointsCircle, nbPointsCircle);
 		
 	ground->getComponents()->getRigidBody()->changeIndexesList(*ground->indexesList);
 	ground->getComponents()->getRigidBody()->changeVerticesList(*ground->verticesList);
@@ -507,7 +509,7 @@ void makeExplosion()
 			for(int k =0; k < 5; ++k)
 			{
 					
-				frag = CreateFragments(vec3((float)k * 10.0f-10.f, (float)i * 10.0f - (depthExplosion/3), (float)j * 10.0f-10.0f), 6.0f);
+				frag = CreateFragments(positionImpact + vec3((float)k * 10.0f-10.f, (float)i * 10.0f - (depthExplosion/3), (float)j * 10.0f-10.0f), 6.0f);
 
 				++nbObjects;
 
@@ -613,7 +615,19 @@ void Keyboard(unsigned char key, int mx, int my)
 		objectManager.setWireframeMode(wireframeMode);
 		break;
 	case 'u':
-		makeExplosion();
+		makeExplosion(vec3(0.0f, 0.0f, 0.0f));
+		break;
+	case 'i':
+		makeExplosion(vec3(750.0f, 0.0f, 750.0f));
+		break;
+	case 'o':
+		makeExplosion(vec3(-750.0f, 0.0f, 750.0f));
+		break;
+	case 'p':
+		makeExplosion(vec3(-750.0f, 0.0f, -750.0f));
+		break;
+	case 'm':
+		makeExplosion(vec3(750.0f, 0.0f, -750.0f));
 		break;
 	case 'v':
 
@@ -714,6 +728,26 @@ void Keyboard(unsigned char key, int mx, int my)
 		break;
 	}
 
+}
+
+void KeyboardRepeat(unsigned char key, int mx, int my)
+{
+	float moveSpeed = 10.0f;
+	switch(key)
+	{
+	case 'z':
+		camera.position += camera.target * moveSpeed;
+		break;
+	case 's':
+		camera.position -= camera.target * moveSpeed;
+		break;
+	case 'q':
+		camera.position += camera.orientation.Cross(camera.target).Normalized() * moveSpeed;
+		break;
+	case 'd':
+		camera.position -= camera.orientation.Cross(camera.target).Normalized() * moveSpeed;
+		break;
+	}
 }
 
 void Mouse(int button, int state, int mx, int my)

@@ -312,6 +312,10 @@ LRESULT WINAPI EsgiWindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 			if ((lParam & 0x40000000) == 0) {
 				esgiKeyboardFunc((unsigned char) wParam, (int) point.x, (int) point.y );
 			}
+			else
+			{
+				esgiKeyboardRepeatFunc((unsigned char) wParam, (int) point.x, (int) point.y );
+			}
 			/*EsgiContext *esContext = (EsgiContext*)(LONG_PTR) GetWindowLongPtr( hWnd, GWL_USERDATA );
 			if ( esContext && esContext->keyFunc )
 				esContext->keyFunc ( esContext, (unsigned char) wParam, 
