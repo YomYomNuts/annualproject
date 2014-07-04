@@ -393,8 +393,10 @@ vector<unsigned short> * Generic_Object::RemoveVertexAround(vec3 positionImpact,
 	return listIndexNeighbour;
 }
 
-void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector<unsigned short> * listVerticesConvexPolygon, std::vector<unsigned short> * listIndexNeighbour)
+void Generic_Object::Merge(vec3 positionImpact, vec3 positionTranslate, Generic_Object * go, std::vector<unsigned short> * listVerticesConvexPolygon, std::vector<unsigned short> * listIndexNeighbour)
 {
+	mat4 matrixRotation = esgiLookAt(positionImpact, vec3(0.f, 30.f, 1.0f), vec3(0, -1, 0));
+
 	// Add the vertex, edge and faces already calculate
 	unsigned int numberVertices = this->verticesList->size();
 	this->verticesList->insert(this->verticesList->end(), go->verticesList->begin(), go->verticesList->end());
@@ -416,7 +418,6 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 
 
 	// Calculate the new edge, face
-	mat4 matrixRotation = esgiLookAt(positionImpact, vec3(0, -30, -1), vec3(0, -1, 0));
 	std::vector<Edge*> listNewEdges;
 	std::vector<unsigned short> listVertexUse;
 	for (unsigned int i = 0; i < listIndexNeighbour->size(); ++i)
@@ -430,6 +431,7 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 		{
 			unsigned short tempIndex = listVerticesConvexPolygon->at(j);
 			vec3 tempVertex = go->verticesList->at(tempIndex);
+			//vec3 tempVertex = matrixRotation * (go->verticesList->at(tempIndex) - positionTranslate);
 			float size = (currentVertex - tempVertex).Length();
 			if (size < closestDistance)
 			{
@@ -464,6 +466,7 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 		if (!findIndex)
 		{
 			vec3 vertex0 = this->verticesList->at(index);
+			//vec3 vertex0 = matrixRotation * (this->verticesList->at(index) - positionTranslate);
 			int closestVertices = -1;
 			float closestDistance = 1000000;
 			for (unsigned int j = 0; j < listIndexNeighbour->size(); ++j)
@@ -497,6 +500,8 @@ void Generic_Object::Merge(vec3 positionImpact, Generic_Object * go, std::vector
 			nextIndex = listVerticesConvexPolygon->at(i + 1) + numberVertices;
 		vec3 currentVertex = this->verticesList->at(currentIndex);
 		vec3 nextVertex = this->verticesList->at(nextIndex);
+		//vec3 currentVertex = matrixRotation * (this->verticesList->at(currentIndex) - positionTranslate);
+		//vec3 nextVertex = matrixRotation * (this->verticesList->at(nextIndex) - positionTranslate);
 
 		for (unsigned int j = 0; j < listNewEdges.size(); ++j)
 		{

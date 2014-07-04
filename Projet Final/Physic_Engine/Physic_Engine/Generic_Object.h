@@ -31,7 +31,7 @@ public:
 	vector<vec3>* getListIndexesFaces();
 	void CalculateIndexes();
 	void Scale(float valueScale);
-	void Merge(vec3 positionImpact, Generic_Object * go, std::vector<unsigned short> * listVerticesConvexPolygon, std::vector<unsigned short> * listIndexNeighbour);
+	void Merge(vec3 positionImpact, vec3 positionTranslate, Generic_Object * go, std::vector<unsigned short> * listVerticesConvexPolygon, std::vector<unsigned short> * listIndexNeighbour);
 	std::vector<unsigned short> * RemoveVertexAround(vec3 positionImpact, float radius);
 	void TranslateAndLookAtAndScale(const vec3 & positionCenterRotation, const vec3 & positionLookAt, const vec3 & positionTranlate, float valueScale);
 	void calculateCenterOfObject();
