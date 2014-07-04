@@ -69,7 +69,7 @@ struct Matrix2
 template <typename Type>
 struct Matrix3 
 {
-	Matrix3() {}    
+	Matrix3() {}
     Matrix3(const Type* m)
     {
         I.x = m[0]; I.y = m[1]; I.z = m[2];
@@ -174,6 +174,14 @@ struct Matrix4
         v.y = I.y * rhs.x + J.y * rhs.y + K.y * rhs.z + T.y * rhs.w;
         v.z = I.z * rhs.x + J.z * rhs.y + K.z * rhs.z + T.z * rhs.w;
         v.w = I.w * rhs.x + J.w * rhs.y + K.w * rhs.z + T.w * rhs.w;
+        return v;
+    }
+    Vector3<Type> operator *(const Vector3<Type>& rhs) const
+    {
+        Vector3<Type> v;
+        v.x = I.x * rhs.x + J.x * rhs.y + K.x * rhs.z;
+        v.y = I.y * rhs.x + J.y * rhs.y + K.y * rhs.z;
+        v.z = I.z * rhs.x + J.z * rhs.y + K.z * rhs.z;
         return v;
     }
 

@@ -254,7 +254,7 @@ bool Setup()
 	shaderSkybox.LoadFragmentShader("basic_texture.frag");
 	shaderSkybox.Create();
 
-	camera.position = vec3(0.f, 300.f, 150.f); //vec3(3.f, 10.f, 20.f);vec3(0.0f, 3.f, 4.f); (3.f, 10.f, 70.f); (3.f, 20.f, 100.f)
+	camera.position = vec3(0.f, 300.f, -150.f); //vec3(3.f, 10.f, 20.f);vec3(0.0f, 3.f, 4.f); (3.f, 10.f, 70.f); (3.f, 20.f, 100.f)
 	camera.orientation = vec3(0.f, 1.f, 0.f);
 	camera.target = vec3(0.f, 0.f, 1.f);
 	
@@ -488,7 +488,7 @@ void makeExplosion(vec3 positionImpact)
 
 	camera.position = vec3(0.f, 30.f, 1.0f);
 
-	DestructorManager::LaunchDestruction(objectManager, ground, positionImpact, -camera.position, radiusExplosionCircle, depthExplosion, nbPointsCircle, nbPointsCircle);
+	DestructorManager::LaunchDestruction(objectManager, ground, positionImpact, -camera.position, radiusExplosionCircle, depthExplosion, nbPointsCircle, nbParticlesVoronoi);
 		
 	ground->getComponents()->getRigidBody()->changeIndexesList(*ground->indexesList);
 	ground->getComponents()->getRigidBody()->changeVerticesList(*ground->verticesList);
@@ -504,17 +504,17 @@ void makeExplosion(vec3 positionImpact)
 
 	for(int i = 0; i < 4; ++i)
 	{
-		for(int j= 0; j < 4; ++j)
+		for(int j = 0; j < 4; ++j)
 		{
-			for(int k =0; k < 5; ++k)
+			for(int k = 0; k < 4; ++k)
 			{
 					
 				frag = CreateFragments(positionImpact + vec3((float)k * 10.0f-10.f, (float)i * 10.0f - (depthExplosion/3), (float)j * 10.0f-10.0f), 6.0f);
 
 				++nbObjects;
 
-				LO = 0.0f;
-				HI = 1.0f;
+				LO = -3.0f;
+				HI = 3.0f;
 
 				r = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
 				g = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
@@ -614,19 +614,19 @@ void Keyboard(unsigned char key, int mx, int my)
 
 		objectManager.setWireframeMode(wireframeMode);
 		break;
-	case 'u':
+	case 'y':
 		makeExplosion(vec3(0.0f, 0.0f, 0.0f));
 		break;
-	case 'i':
+	case 'u':
 		makeExplosion(vec3(750.0f, 0.0f, 750.0f));
 		break;
-	case 'o':
+	case 'i':
 		makeExplosion(vec3(-750.0f, 0.0f, 750.0f));
 		break;
-	case 'p':
+	case 'o':
 		makeExplosion(vec3(-750.0f, 0.0f, -750.0f));
 		break;
-	case 'm':
+	case 'p':
 		makeExplosion(vec3(750.0f, 0.0f, -750.0f));
 		break;
 	case 'v':

@@ -25,6 +25,6 @@ void DestructorManager::LaunchDestruction(ObjectManager & gom, Generic_Object * 
 	//VoronoiGenerator::GenerateVoronoi(gom, go, positionImpact, positionLookAt, vec3(0.0f, -height/2, 0.0f), radius, height, 0.7f, nbParticlesVoronoi);
 	go->TranslateAndLookAtAndScale(vec3(0.0f, 0.0f, 0.0f), positionLookAt, vec3(0.0f, -depth/2, 0.0f) + positionImpact, 1.3f);
 	go->CalculateIndexes();
-	goImpact->Merge(positionImpact, go, listVerticesConvexPolygon, listIndexNeighbour);
+	goImpact->Merge(positionImpact, vec3(0.0f, -depth/2, 0.0f), go, listVerticesConvexPolygon, listIndexNeighbour);
 	delete listVerticesConvexPolygon;
 }
