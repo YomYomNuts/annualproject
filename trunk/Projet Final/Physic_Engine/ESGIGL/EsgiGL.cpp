@@ -113,6 +113,7 @@ EsgiGLApplication::EsgiGLApplication() :
     m_UpdateFunc = NULL;
     m_KeyFunc = NULL;
 	m_KeySpecialFunc = NULL;
+	m_KeyRepeatFunc = NULL;
 	m_MouseFunc = NULL;
 	m_PassiveMotionFunc = NULL;
 	m_MotionFunc = NULL;
@@ -238,6 +239,16 @@ void EsgiGLApplication::HandleKeyboard(int key, int mx, int my)
 	}
 
 	m_KeySpecialFunc(key, mx, my);
+}
+
+void EsgiGLApplication::HandleKeyboardRepeat(unsigned char key, int mx, int my)
+{
+	if (m_KeyRepeatFunc == NULL) {
+		defaultHandleKeys(key, mx, my);
+		return;
+	}
+
+	m_KeyRepeatFunc(key, mx, my);
 }
 
 void EsgiGLApplication::HandleMouse(int button, int state, int mx, int my)
@@ -388,6 +399,11 @@ void esgiKeyboardFunc(unsigned char key, int mx, int my)
 void esgiKeyboardSpecialFunc(int key, int mx, int my)
 {	
 	EsgiGLApplication::g_ThisInstance->HandleKeyboard(key, mx, my);
+}
+
+void esgiKeyboardRepeatFunc(unsigned char key, int mx, int my)
+{	
+	EsgiGLApplication::g_ThisInstance->HandleKeyboardRepeat(key, mx, my);
 }
 
 void esgiMouseFunc(int button, int state, int mx, int my)
